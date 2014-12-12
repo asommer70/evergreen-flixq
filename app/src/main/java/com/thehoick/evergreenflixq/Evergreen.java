@@ -93,8 +93,8 @@ public class Evergreen extends AsyncTask<String, Void, String> {
                             dvd.setLibaries(libraryList);
                             break;
                         } else {
-                          dvd.setEvergreenLink(Netflix.mCardUrlBegin + dvd.getTitle() +
-                                  Netflix.mCardUrlEnd);
+                          dvd.setEvergreenLink(libraryUrl + mLibraryUrlBegin + dvd.getTitle() +
+                                  mLibraryUrlEnd);
                           dvd.setStatus("Not Available");
                         }
                     }

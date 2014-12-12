@@ -36,11 +36,6 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
 
     private static final String TAG = Netflix.class.getSimpleName();
 
-    public static String mCardUrlBegin = "http://appalachian.nccardinal.org/eg/opac/results?query=";
-    public static String mCardUrlEnd = "&qtype=keyword&fi%3Asearch_format=dvd&locg=126&sort=";
-    public static String mTitle;
-    public static Dvd mDvd;
-
     @Override
     protected List<Dvd> doInBackground(String... arg) {
 
