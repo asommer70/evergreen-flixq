@@ -9,5 +9,7 @@
     <string name="library_url">Library Search URL</string>
     <string name="library_search">The URL for your library\'s Evergreen ILS (usually ends with /eg/opac/results).</string>
     <string name="dvd_poster">Movie poster for DVD.</string>
+    <string name="name_label">Library Name</string>
+    <string name="library_status">DVD Status</string>
 
 </resources>

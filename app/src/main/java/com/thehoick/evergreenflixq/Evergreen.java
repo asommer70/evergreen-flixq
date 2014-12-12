@@ -59,9 +59,10 @@ public class Evergreen extends AsyncTask<String, Void, String> {
                 } else {
                     //Log.i(TAG, "We might have something for: " + dvd.getTitle());
 
-                    Elements record_titles = doc.select(".record_title");
-                    for (org.jsoup.nodes.Element record_title : record_titles) {
+                    Elements results = doc.select(".result_metadata");
+                    for (org.jsoup.nodes.Element result : results) {
 
+                        Elements record_title = result.select(".record_title");
                         Matcher m = p.matcher(record_title.text().toLowerCase());
                         boolean b = m.find();
 
@@ -72,10 +73,10 @@ public class Evergreen extends AsyncTask<String, Void, String> {
 
                             dvd.setEvergreenLink("http://appalachian.nccardinal.org" +
                                     record_title.attr("href"));
-                            Log.i(TAG, "The library has a copy of: " + dvd.getTitle());
-                            //Log.i(TAG, record_title.attr("href"));
+                            //Log.i(TAG, "The library has a copy of: " + dvd.getTitle());
+                            //Log.i(TAG, result.attr("href"));
 
-                            Elements libraries = doc.select("a[typeof=\"Library\"");
+                            Elements libraries = result.select("a[typeof=\"Library\"");
                             List<Library> libraryList = new ArrayList<Library>();
                             for (org.jsoup.nodes.Element a : libraries) {
                                 Library library = new Library();
@@ -106,8 +107,9 @@ public class Evergreen extends AsyncTask<String, Void, String> {
 
     protected void onPostExecute(String res) {
 
-        DvdAdapter dvdCustomAdapter = new DvdAdapter(MainActivity.mContext, MainActivity.mDvdList);
-        MainActivity.mGridView.setAdapter(dvdCustomAdapter);
+        //DvdAdapter dvdCustomAdapter = new DvdAdapter(MainActivity.mContext, MainActivity.mDvdList);
+        //dvdCustomAdapter.notifyDataSetChanged();
+        //MainActivity.mGridView.setAdapter(dvdCustomAdapter);
 
     }
 }
