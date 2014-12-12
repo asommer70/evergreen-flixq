@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:title="@string/netflix_url"
+        android:summary="@string/netflix_rss"
+        android:key="netflixUrl"/>
+
+    <EditTextPreference
+        android:title="@string/library_url"
+        android:summary="@string/library_search"
+        android:key="libraryUrl"/>
+
+
+</PreferenceScreen>

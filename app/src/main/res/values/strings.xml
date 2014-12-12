@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Evergreen FlixQ</string>
+    <string name="config_urls">Configure Netflix and Library URLs in Settings.</string>
+    <string name="action_settings">Settings</string>
+    <string name="netflix_url">Netflix RSS URL</string>
+    <string name="netflix_rss">The URL for the RSS feed of your DVD Queue.</string>
+    <string name="library_url">Library Search URL</string>
+    <string name="library_search">The URL for your library\'s Evergreen ILS (usually ends with /eg/opac/results).</string>
+    <string name="dvd_poster">Movie poster for DVD.</string>
+
+</resources>
