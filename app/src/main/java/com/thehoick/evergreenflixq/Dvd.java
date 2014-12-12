@@ -25,6 +25,7 @@ public class Dvd {
     private String link;
     private String imgUrl;
     private String evergreenLink;
+    private List<Library> libaries;
 
     public String getEvergreenLink() {
         return evergreenLink;
@@ -72,5 +73,13 @@ public class Dvd {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public List<Library> getLibaries() {
+        return libaries;
+    }
+
+    public void setLibaries(List<Library> libaries) {
+        this.libaries = libaries;
     }
 }

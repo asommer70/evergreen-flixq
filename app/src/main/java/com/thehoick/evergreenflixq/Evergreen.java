@@ -1,6 +1,8 @@
 package com.thehoick.evergreenflixq;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.jdom2.Element;
@@ -10,6 +12,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.nio.charset.MalformedInputException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,7 +25,13 @@ import java.util.regex.Pattern;
 public class Evergreen extends AsyncTask<String, Void, String> {
     private static final String TAG = Evergreen.class.getSimpleName();
 
+    public static String mLibraryUrlBegin = "/eg/opac/results?query=";
+    public static String mLibraryUrlEnd = "&qtype=keyword&fi%3Asearch_format=dvd&locg=126&sort=";
+
     protected String doInBackground(String... args) {
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.mContext);
+        String libraryUrl = prefs.getString("libraryUrl", "");
 
         for (int i = 0; i < MainActivity.mDvdList.size(); i++) {
 
@@ -32,7 +41,8 @@ public class Evergreen extends AsyncTask<String, Void, String> {
 
             Document doc = null;
             try {
-                doc = Jsoup.connect(Netflix.mCardUrlBegin + dvd.getTitle() + Netflix.mCardUrlEnd).timeout(6000).get();
+                doc = Jsoup.connect(libraryUrl + mLibraryUrlBegin + dvd.getTitle() + mLibraryUrlEnd)
+                        .timeout(6000).get();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -45,6 +55,7 @@ public class Evergreen extends AsyncTask<String, Void, String> {
                 if (zero_search_hits.size() != 0) {
                     dvd.setStatus("Not Available");
                     Log.i(TAG, "Sorry nothing for: " + dvd.getTitle());
+                    break;
                 } else {
                     //Log.i(TAG, "We might have something for: " + dvd.getTitle());
 
@@ -59,12 +70,31 @@ public class Evergreen extends AsyncTask<String, Void, String> {
                             dvd.setStatus("Available");
                             // Or 'Checked Out'
 
-                            dvd.setEvergreenLink("http://appalachian.nccardinal.org" + record_title.attr("href"));
+                            dvd.setEvergreenLink("http://appalachian.nccardinal.org" +
+                                    record_title.attr("href"));
                             Log.i(TAG, "The library has a copy of: " + dvd.getTitle());
-                            Log.i(TAG, record_title.attr("href"));
+                            //Log.i(TAG, record_title.attr("href"));
+
+                            Elements libraries = doc.select("a[typeof=\"Library\"");
+                            List<Library> libraryList = new ArrayList<Library>();
+                            for (org.jsoup.nodes.Element a : libraries) {
+                                Library library = new Library();
+
+                                String library_name = a.children().get(0).text();
+                                library.setName(library_name);
+
+                                String status = a.parent().nextElementSibling()
+                                        .nextElementSibling().nextElementSibling().text();
+                                library.setStatus(status);
+                                libraryList.add(library);
+                                Log.i(TAG, "Library: " + library_name + " status: " + status);
+                            }
+
+                            dvd.setLibaries(libraryList);
                             break;
                         } else {
-                          dvd.setEvergreenLink(Netflix.mCardUrlBegin + dvd.getTitle() + Netflix.mCardUrlEnd);
+                          dvd.setEvergreenLink(Netflix.mCardUrlBegin + dvd.getTitle() +
+                                  Netflix.mCardUrlEnd);
                           dvd.setStatus("Not Available");
                         }
                     }
