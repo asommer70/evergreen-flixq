@@ -42,12 +42,13 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
             holder.description = (TextView)convertView.findViewById(R.id.description);
             holder.nameLabel = (TextView)convertView.findViewById(R.id.dvdTitle);
             holder.dvdImage = (ImageView)convertView.findViewById(R.id.dvdImage);
+            holder.status = (TextView)convertView.findViewById(R.id.status);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder)convertView.getTag();
         }
 
-        Dvd dvd = MainActivity.mDvdList.get(position);
+        final Dvd dvd = MainActivity.mDvdList.get(position);
 
         holder.nameLabel.setText(dvd.getTitle());
         //holder.description.loadData(dvd.getDescription(), "text/html", null);
@@ -56,6 +57,25 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
 
         Picasso.with(MainActivity.mContext).load(dvd.getImgUrl()).into(holder.dvdImage);
 
+        holder.dvdImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(dvd.getLink()));
+                mContext.startActivity(intent);
+            }
+        });
+
+        holder.status.setText(dvd.getStatus());
+
+        holder.status.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(dvd.getEvergreenLink()));
+                mContext.startActivity(intent);
+            }
+        });
 
         return convertView;
     }
@@ -64,6 +84,7 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
         TextView description;
         ImageView dvdImage;
         TextView nameLabel;
+        TextView status;
     }
 
     public void refill(List<Dvd> dvds) {

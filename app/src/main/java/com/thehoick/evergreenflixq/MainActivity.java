@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
 
         mContext = this;
         mGridView = (GridView)findViewById(R.id.dvds);
-        mGridView.setOnItemClickListener(mOnItemClickListener);
+        //mGridView.setOnItemClickListener(mOnItemClickListener);
 
         Netflix netflix = new Netflix();
         netflix.execute();
@@ -77,7 +77,7 @@ public class MainActivity extends Activity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
-            ImageView checkImageView = (ImageView)view.findViewById(R.id.dvdImage);
+            ImageView dvdImage = (ImageView)view.findViewById(R.id.dvdImage);
 
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse(mDvdList.get(position).getLink()));

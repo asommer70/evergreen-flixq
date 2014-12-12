@@ -133,6 +133,9 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
 
         DvdAdapter dvdCustomAdapter = new DvdAdapter(MainActivity.mContext, dvds);
         MainActivity.mGridView.setAdapter(dvdCustomAdapter);
+
+        Evergreen evergreen = new Evergreen();
+        evergreen.execute();
     }
 
 }

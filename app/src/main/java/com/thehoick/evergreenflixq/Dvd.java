@@ -24,6 +24,15 @@ public class Dvd {
     private String status;
     private String link;
     private String imgUrl;
+    private String evergreenLink;
+
+    public String getEvergreenLink() {
+        return evergreenLink;
+    }
+
+    public void setEvergreenLink(String evergreenLink) {
+        this.evergreenLink = evergreenLink;
+    }
 
     public String getImgUrl() {
         return imgUrl;
