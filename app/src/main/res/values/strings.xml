@@ -11,5 +11,7 @@
     <string name="dvd_poster">Movie poster for DVD.</string>
     <string name="name_label">Library Name</string>
     <string name="library_status">DVD Status</string>
+    <string name="title_activity_libraries">Libraries</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

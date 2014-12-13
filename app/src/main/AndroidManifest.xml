@@ -27,6 +27,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.thehoick.evergreenflixq.MainActivity" />
         </activity>
+        <activity
+            android:name=".LibrariesActivity"
+            android:label="@string/title_activity_libraries"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.thehoick.evergreenflixq.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

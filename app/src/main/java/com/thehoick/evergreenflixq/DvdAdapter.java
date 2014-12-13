@@ -16,10 +16,13 @@ import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import javax.xml.datatype.Duration;
 
 /**
  * Created by adam on 12/8/14.
@@ -49,6 +52,7 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
             holder.dvdImage = (ImageView)convertView.findViewById(R.id.dvdImage);
             holder.status = (TextView)convertView.findViewById(R.id.status);
             //holder.libraries = (TableLayout)convertView.findViewById(R.id.libraries);
+            holder.libraryIcon = (ImageView)convertView.findViewById(R.id.libraryIcon);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder)convertView.getTag();
@@ -63,7 +67,7 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
 
         Picasso.with(MainActivity.mContext).load(dvd.getImgUrl()).into(holder.dvdImage);
 
-        holder.dvdImage.setOnClickListener(new DvdOnClickListener(dvd) {
+        holder.dvdImage.setOnClickListener(new DvdOnClickListener(dvd, position) {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -74,19 +78,38 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
 
         holder.status.setText(dvd.getStatus());
 
-        holder.status.setOnClickListener(new DvdOnClickListener(dvd) {
+        holder.status.setOnClickListener(new DvdOnClickListener(dvd, position) {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
+                /*Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(dvd.getEvergreenLink()));
-                mContext.startActivity(intent);
+                mContext.startActivity(intent);*/
+
+                if (dvd.getStatus() != "Not Available") {
+
+                    Intent intent = new Intent(mContext, LibrariesActivity.class);
+                    intent.putExtra("position", position);
+                    mContext.startActivity(intent);
+                } else {
+                    Toast.makeText(mContext, "Sorry, " + dvd.getTitle() +
+                            " isn't available in your configured library.", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
-        try {
+        /*try {
             //Log.i(TAG, "libraries size: " + dvd.getLibaries().size());
             // Add the whole Libraries TableLayout dynamically.
+            TableLayout tableLayout = new TableLayout(mContext);
+            TableRow rowLabels = new TableRow(mContext);
+            TextView statusLabel = new TextView(mContext);
+            TextView nameLabel = new TextView(mContext);
+            statusLabel.setText(R.string.library_status);
+            nameLabel.setText(R.string.name_label);
+            tableLayout.addView(rowLabels);
+
             for (Library library : dvd.getLibaries()) {
+
                 TableRow row = new TableRow(mContext);
                 //TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
                 //row.setLayoutParams(lp);
@@ -98,11 +121,12 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
 
                 row.addView(name);
                 row.addView(status);
-                holder.libraries.addView(row);
+                tableLayout.addView(row);
             }
-        } catch (Exception e) {
+            holder.libraries.addView(tableLayout);*/
+        //} catch (Exception e) {
           //Log.i(TAG, e.getMessage());
-        }
+        //}
 
         return convertView;
     }
@@ -113,6 +137,7 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
         TextView nameLabel;
         TextView status;
         //TableLayout libraries;
+        ImageView libraryIcon;
     }
 
     public void refill(List<Dvd> dvds) {
@@ -124,7 +149,9 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
     public class DvdOnClickListener implements View.OnClickListener {
 
         Dvd dvd;
-        public DvdOnClickListener(Dvd dvd) {
+        int position;
+        public DvdOnClickListener(Dvd dvd, int postition) {
+            this.position = postition;
             this.dvd = dvd;
         }
 
