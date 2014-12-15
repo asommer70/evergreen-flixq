@@ -33,6 +33,8 @@ public class MainActivity extends Activity {
 
     public static Boolean mGetNetflix = true;
 
+    public static DvdAdapter mDvdCustomAdapter;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -46,7 +48,7 @@ public class MainActivity extends Activity {
         if (mGetNetflix) {
             Netflix netflix = new Netflix();
             netflix.execute();
-            mGetNetflix = false;
+            //mGetNetflix = false;
         }
 
         /*if (mGridView.getAdapter() != null) {
@@ -72,26 +74,22 @@ public class MainActivity extends Activity {
 
         //this.setProgressBarIndeterminateVisibility(true);
 
-        if (mGridView.getAdapter() == null) {
-            //mGetNetflix = false;
-            DvdAdapter dvdCustomAdapter = new DvdAdapter(mGridView.getContext(), mDvdList);
-            mGridView.setAdapter(dvdCustomAdapter);
-        } else {
-            ((DvdAdapter)mGridView.getAdapter()).refill(mDvdList);
-            //MainActivity.mGridView.getAdapter().refill(MainActivity.mDvdList);
-        }
+        Log.i(TAG, "onResume mGridView.getAdapter: " + mGridView.getAdapter());
+
+        Log.i(TAG, "mDvdList.size(): " + mDvdList.size());
+        mGridView.setAdapter(mDvdCustomAdapter);
     }
 
     @Override
     public void onBackPressed() {
-        Log.i(TAG, "Back button pressed...");
+        //Log.i(TAG, "Back button pressed...");
         finish();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mGetNetflix = false;
+        //mGetNetflix = true;
     }
 
     @Override

@@ -111,5 +111,7 @@ public class Evergreen extends AsyncTask<String, Void, String> {
         //dvdCustomAdapter.notifyDataSetChanged();
         //MainActivity.mGridView.setAdapter(dvdCustomAdapter);
 
+        MainActivity.mDvdCustomAdapter.notifyDataSetChanged();
+
     }
 }

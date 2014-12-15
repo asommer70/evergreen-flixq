@@ -139,22 +139,22 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
 
         MainActivity.mDvdList = dvds;
 
-        Evergreen evergreen = new Evergreen();
-        evergreen.execute();
-
-
         //Log.i(TAG, "dvds size: " + dvds.size());
 
         Log.i(TAG, "mGridView adapter: " + MainActivity.mGridView.getAdapter());
 
-        if (MainActivity.mGridView.getAdapter() == null) {
+        if (MainActivity.mGetNetflix) {
             // I think I have to call this here because the MainActivity.mDvdList isn't populated
             // until the AsyncTask is done and the adapter won't fire getView() until there is items
             // in the List.
             //
-            DvdAdapter dvdCustomAdapter = new DvdAdapter(MainActivity.mContext, dvds);
-            MainActivity.mGridView.setAdapter(dvdCustomAdapter);
+            Evergreen evergreen = new Evergreen();
+            evergreen.execute();
 
+            MainActivity.mDvdCustomAdapter = new DvdAdapter(MainActivity.mContext, dvds);
+            MainActivity.mGridView.setAdapter(MainActivity.mDvdCustomAdapter);
+
+            MainActivity.mGetNetflix = false;
         } else {
             ((DvdAdapter)MainActivity.mGridView.getAdapter()).refill(MainActivity.mDvdList);
         }
