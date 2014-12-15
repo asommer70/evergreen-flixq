@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -46,6 +47,7 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
 
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.dvd_item, null);
+
             holder = new ViewHolder();
             holder.description = (TextView)convertView.findViewById(R.id.description);
             holder.nameLabel = (TextView)convertView.findViewById(R.id.dvdTitle);
@@ -54,6 +56,7 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
             //holder.libraries = (TableLayout)convertView.findViewById(R.id.libraries);
             holder.libraryIcon = (ImageView)convertView.findViewById(R.id.libraryIcon);
             convertView.setTag(holder);
+
         } else {
             holder = (ViewHolder)convertView.getTag();
         }
@@ -81,12 +84,8 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
         holder.status.setOnClickListener(new DvdOnClickListener(dvd, position) {
             @Override
             public void onClick(View view) {
-                /*Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(dvd.getEvergreenLink()));
-                mContext.startActivity(intent);*/
-
                 if (dvd.getStatus() != "Not Available") {
-
+                    MainActivity.mGetNetflix = false;
                     Intent intent = new Intent(mContext, LibrariesActivity.class);
                     intent.putExtra("position", position);
                     mContext.startActivity(intent);
@@ -96,37 +95,6 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
                 }
             }
         });
-
-        /*try {
-            //Log.i(TAG, "libraries size: " + dvd.getLibaries().size());
-            // Add the whole Libraries TableLayout dynamically.
-            TableLayout tableLayout = new TableLayout(mContext);
-            TableRow rowLabels = new TableRow(mContext);
-            TextView statusLabel = new TextView(mContext);
-            TextView nameLabel = new TextView(mContext);
-            statusLabel.setText(R.string.library_status);
-            nameLabel.setText(R.string.name_label);
-            tableLayout.addView(rowLabels);
-
-            for (Library library : dvd.getLibaries()) {
-
-                TableRow row = new TableRow(mContext);
-                //TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
-                //row.setLayoutParams(lp);
-
-                TextView name = new TextView(mContext);
-                TextView status = new TextView(mContext);
-                name.setText(library.getName());
-                status.setText(library.getStatus());
-
-                row.addView(name);
-                row.addView(status);
-                tableLayout.addView(row);
-            }
-            holder.libraries.addView(tableLayout);*/
-        //} catch (Exception e) {
-          //Log.i(TAG, e.getMessage());
-        //}
 
         return convertView;
     }
@@ -144,6 +112,21 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
         mDvds.clear();
         mDvds.addAll(dvds);
         notifyDataSetChanged();
+    }
+
+    @Override
+    public Dvd getItem(int position) {
+        return mDvds.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getCount() {
+        return mDvds.size();
     }
 
     public class DvdOnClickListener implements View.OnClickListener {

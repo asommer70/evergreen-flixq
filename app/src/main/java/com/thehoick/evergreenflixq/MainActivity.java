@@ -29,7 +29,9 @@ public class MainActivity extends Activity {
     public static GridView mGridView;
     public static Context mContext;
 
-    public static List<Dvd> mDvdList = new ArrayList<Dvd>();;
+    public static List<Dvd> mDvdList = new ArrayList<Dvd>();
+
+    public static Boolean mGetNetflix = true;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,8 +41,22 @@ public class MainActivity extends Activity {
         mGridView = (GridView)findViewById(R.id.dvds);
         //mGridView.setOnItemClickListener(mOnItemClickListener);
 
-        Netflix netflix = new Netflix();
-        netflix.execute();
+        Log.i(TAG, "MainActivity mGridView adapter: " + mGridView.getAdapter());
+
+        if (mGetNetflix) {
+            Netflix netflix = new Netflix();
+            netflix.execute();
+            mGetNetflix = false;
+        }
+
+        /*if (mGridView.getAdapter() != null) {
+            DvdAdapter dvdCustomAdapter = new DvdAdapter(mGridView.getContext(), mDvdList);
+            mGridView.setAdapter(dvdCustomAdapter);
+            //dvdCustomAdapter.notifyDataSetChanged();
+        } *///else {
+            //((DvdAdapter)mGridView.getAdapter()).refill(mDvdList);
+            //MainActivity.mGridView.getAdapter().refill(MainActivity.mDvdList);
+        //}
 
 
         //Log.i(TAG, "dvdList size: " + netflix.mDvds.size());
@@ -50,6 +66,33 @@ public class MainActivity extends Activity {
         //mGridView.setAdapter(dvdCustomAdapter);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        //this.setProgressBarIndeterminateVisibility(true);
+
+        if (mGridView.getAdapter() == null) {
+            //mGetNetflix = false;
+            DvdAdapter dvdCustomAdapter = new DvdAdapter(mGridView.getContext(), mDvdList);
+            mGridView.setAdapter(dvdCustomAdapter);
+        } else {
+            ((DvdAdapter)mGridView.getAdapter()).refill(mDvdList);
+            //MainActivity.mGridView.getAdapter().refill(MainActivity.mDvdList);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.i(TAG, "Back button pressed...");
+        finish();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mGetNetflix = false;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -65,6 +108,7 @@ public class MainActivity extends Activity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+            mGetNetflix = false;
             Intent i = new Intent(this, SettingsActivity.class);
             this.startActivityForResult(i, RESULT_SETTINGS);
 

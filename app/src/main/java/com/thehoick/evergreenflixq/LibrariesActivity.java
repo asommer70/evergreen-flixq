@@ -19,7 +19,7 @@ public class LibrariesActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_libraries);
 
-        Intent intent = getIntent();
+        //Intent intent = getIntent();
         int position = getIntent().getIntExtra("position", 0);
 
         final Dvd dvd = MainActivity.mDvdList.get(position);

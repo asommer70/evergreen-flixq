@@ -1,5 +1,6 @@
 package com.thehoick.evergreenflixq;
 
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -35,6 +36,13 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
 //public class Netflix extends AsyncTask<String, Void, String> {
 
     private static final String TAG = Netflix.class.getSimpleName();
+    private ProgressDialog dialog = new ProgressDialog(MainActivity.mContext);
+
+    @Override
+    protected void onPreExecute() {
+        this.dialog.setMessage("Please wait");
+        this.dialog.show();
+    }
 
     @Override
     protected List<Dvd> doInBackground(String... arg) {
@@ -67,6 +75,7 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
         // Starts the query
         try {
             conn.connect();
+            Log.i(TAG, "Getting RSS from Netflix...");
             stream = conn.getInputStream();
         } catch (IOException e) {
             e.printStackTrace();
@@ -94,7 +103,7 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
 
             List<Element> channelChildren = channel.getChildren("item");
 
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < 3; i++) {
                 Element channelChild = channelChildren.get(i);
                 Element titleElement = channelChild.getChild("title");
                 Element description = channelChild.getChild("description");
@@ -118,19 +127,37 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
             }
         }
 
+        MainActivity.mDvdList = dvds;
         return dvds;
     }
 
     protected void onPostExecute(List<Dvd> dvds) {
+        if (dialog.isShowing()) {
+            dialog.dismiss();
+        }
+
+
         MainActivity.mDvdList = dvds;
-
-        Log.i(TAG, "dvds size: " + dvds.size());
-
-        DvdAdapter dvdCustomAdapter = new DvdAdapter(MainActivity.mContext, dvds);
-        MainActivity.mGridView.setAdapter(dvdCustomAdapter);
 
         Evergreen evergreen = new Evergreen();
         evergreen.execute();
+
+
+        //Log.i(TAG, "dvds size: " + dvds.size());
+
+        Log.i(TAG, "mGridView adapter: " + MainActivity.mGridView.getAdapter());
+
+        if (MainActivity.mGridView.getAdapter() == null) {
+            // I think I have to call this here because the MainActivity.mDvdList isn't populated
+            // until the AsyncTask is done and the adapter won't fire getView() until there is items
+            // in the List.
+            //
+            DvdAdapter dvdCustomAdapter = new DvdAdapter(MainActivity.mContext, dvds);
+            MainActivity.mGridView.setAdapter(dvdCustomAdapter);
+
+        } else {
+            ((DvdAdapter)MainActivity.mGridView.getAdapter()).refill(MainActivity.mDvdList);
+        }
     }
 
 }
