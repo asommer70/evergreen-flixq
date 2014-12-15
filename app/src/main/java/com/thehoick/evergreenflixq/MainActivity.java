@@ -111,6 +111,10 @@ public class MainActivity extends Activity {
             this.startActivityForResult(i, RESULT_SETTINGS);
 
             return true;
+        } else if (id == R.id.action_refresh) {
+            Netflix netflix = new Netflix();
+            netflix.execute();
+            mGetNetflix = true;
         }
         return super.onOptionsItemSelected(item);
     }
