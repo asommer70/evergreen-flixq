@@ -26,6 +26,15 @@ public class Dvd {
     private String imgUrl;
     private String evergreenLink;
     private List<Library> libaries;
+    private Boolean libraryGotten = false;
+
+    public Boolean getLibraryGotten() {
+        return libraryGotten;
+    }
+
+    public void setLibraryGotten(Boolean libraryGotten) {
+        this.libraryGotten = libraryGotten;
+    }
 
     public String getEvergreenLink() {
         return evergreenLink;

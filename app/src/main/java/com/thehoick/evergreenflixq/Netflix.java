@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Xml;
 import android.widget.GridView;
+import android.widget.ImageView;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -37,12 +38,6 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
 
     private static final String TAG = Netflix.class.getSimpleName();
     private ProgressDialog dialog = new ProgressDialog(MainActivity.mContext);
-
-    @Override
-    protected void onPreExecute() {
-        this.dialog.setMessage("Please wait");
-        this.dialog.show();
-    }
 
     @Override
     protected List<Dvd> doInBackground(String... arg) {
@@ -131,6 +126,12 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
         return dvds;
     }
 
+    @Override
+    protected void onPreExecute() {
+        this.dialog.setMessage("Please wait");
+        this.dialog.show();
+    }
+
     protected void onPostExecute(List<Dvd> dvds) {
         if (dialog.isShowing()) {
             dialog.dismiss();
@@ -148,8 +149,11 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
             // until the AsyncTask is done and the adapter won't fire getView() until there is items
             // in the List.
             //
-            Evergreen evergreen = new Evergreen();
-            evergreen.execute();
+
+            for (Dvd dvd : MainActivity.mDvdList) {
+                Evergreen evergreen = new Evergreen();
+                evergreen.execute(dvd);
+            }
 
             MainActivity.mDvdCustomAdapter = new DvdAdapter(MainActivity.mContext, dvds);
             MainActivity.mGridView.setAdapter(MainActivity.mDvdCustomAdapter);

@@ -1,9 +1,15 @@
 package com.thehoick.evergreenflixq;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Window;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import org.jdom2.Element;
 import org.jsoup.Jsoup;
@@ -22,20 +28,23 @@ import java.util.regex.Pattern;
  * Class for parsing HTML from Evergreen OPAC search results.
  */
 //public class Evergreen implements Runnable {
-public class Evergreen extends AsyncTask<String, Void, String> {
+public class Evergreen extends AsyncTask<Dvd, Void, String> {
     private static final String TAG = Evergreen.class.getSimpleName();
 
     public static String mLibraryUrlBegin = "/eg/opac/results?query=";
     public static String mLibraryUrlEnd = "&qtype=keyword&fi%3Asearch_format=dvd&locg=126&sort=";
 
-    protected String doInBackground(String... args) {
+
+    protected String doInBackground(Dvd... args) {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.mContext);
         String libraryUrl = prefs.getString("libraryUrl", "");
 
-        for (int i = 0; i < MainActivity.mDvdList.size(); i++) {
+        // Need to fire this AsyncTask for each DVD and not loop through each DVD in the task.
+        //for (int i = 0; i < MainActivity.mDvdList.size(); i++) {
 
-            Dvd dvd = MainActivity.mDvdList.get(i);
+            //Dvd dvd = MainActivity.mDvdList.get(i);
+            Dvd dvd = args[0];
 
             Log.i(TAG, "evergreen title: " + dvd.getTitle());
 
@@ -55,7 +64,7 @@ public class Evergreen extends AsyncTask<String, Void, String> {
                 if (zero_search_hits.size() != 0) {
                     dvd.setStatus("Not Available");
                     Log.i(TAG, "Sorry nothing for: " + dvd.getTitle());
-                    break;
+                    //break;
                 } else {
                     //Log.i(TAG, "We might have something for: " + dvd.getTitle());
 
@@ -92,25 +101,38 @@ public class Evergreen extends AsyncTask<String, Void, String> {
                             }
 
                             dvd.setLibaries(libraryList);
+                            dvd.setLibraryGotten(true);
                             break;
                         } else {
-                          dvd.setEvergreenLink(libraryUrl + mLibraryUrlBegin + dvd.getTitle() +
+                            dvd.setEvergreenLink(libraryUrl + mLibraryUrlBegin + dvd.getTitle() +
                                   mLibraryUrlEnd);
-                          dvd.setStatus("Not Available");
+                            dvd.setStatus("Not Available");
+                            dvd.setLibraryGotten(true);
                         }
                     }
                 }
             }
-        }
+        //}
         return null;
+    }
+
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+
+        //mProgressDialog = ProgressDialog.show(MainActivity.mContext, "Loading",
+        //        "Fetching information from Evergreen...", true);
+
+
     }
 
     protected void onPostExecute(String res) {
 
+        //mProgressDialog.dismiss();
         //DvdAdapter dvdCustomAdapter = new DvdAdapter(MainActivity.mContext, MainActivity.mDvdList);
         //dvdCustomAdapter.notifyDataSetChanged();
         //MainActivity.mGridView.setAdapter(dvdCustomAdapter);
-
         MainActivity.mDvdCustomAdapter.notifyDataSetChanged();
 
     }

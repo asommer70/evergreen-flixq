@@ -14,6 +14,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -55,6 +56,7 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
             holder.status = (TextView)convertView.findViewById(R.id.status);
             //holder.libraries = (TableLayout)convertView.findViewById(R.id.libraries);
             holder.libraryIcon = (ImageView)convertView.findViewById(R.id.libraryIcon);
+            holder.libraryProgress = (ProgressBar)convertView.findViewById(R.id.libraryProgress);
             convertView.setTag(holder);
 
         } else {
@@ -69,6 +71,11 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
         holder.description.setText(dvd.getDescription());
 
         Picasso.with(MainActivity.mContext).load(dvd.getImgUrl()).into(holder.dvdImage);
+        holder.status.setText(dvd.getStatus());
+
+        if (dvd.getLibraryGotten()) {
+            holder.libraryProgress.setVisibility(View.INVISIBLE);
+        }
 
         holder.dvdImage.setOnClickListener(new DvdOnClickListener(dvd, position) {
             @Override
@@ -78,8 +85,6 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
                 mContext.startActivity(intent);
             }
         });
-
-        holder.status.setText(dvd.getStatus());
 
         holder.status.setOnClickListener(new DvdOnClickListener(dvd, position) {
             @Override
@@ -96,6 +101,7 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
             }
         });
 
+
         return convertView;
     }
 
@@ -106,6 +112,7 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
         TextView status;
         //TableLayout libraries;
         ImageView libraryIcon;
+        ProgressBar libraryProgress;
     }
 
     public void refill(List<Dvd> dvds) {
@@ -133,6 +140,7 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
 
         Dvd dvd;
         int position;
+
         public DvdOnClickListener(Dvd dvd, int postition) {
             this.position = postition;
             this.dvd = dvd;
