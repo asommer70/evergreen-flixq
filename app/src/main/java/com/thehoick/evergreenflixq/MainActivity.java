@@ -26,6 +26,8 @@ import java.util.List;
 public class MainActivity extends Activity {
     private static final int RESULT_SETTINGS = 1;
     private static final String TAG = MainActivity.class.getSimpleName();
+    private int mOffset;
+    private int mIndex;
 
     public static GridView mGridView;
     public static Context mContext;
@@ -43,43 +45,25 @@ public class MainActivity extends Activity {
 
         mContext = this;
         mGridView = (GridView)findViewById(R.id.dvds);
-        //mGridView.setOnItemClickListener(mOnItemClickListener);
 
         Log.i(TAG, "MainActivity mGridView adapter: " + mGridView.getAdapter());
 
         if (mGetNetflix) {
             Netflix netflix = new Netflix();
             netflix.execute();
-            //mGetNetflix = false;
         }
-
-        /*if (mGridView.getAdapter() != null) {
-            DvdAdapter dvdCustomAdapter = new DvdAdapter(mGridView.getContext(), mDvdList);
-            mGridView.setAdapter(dvdCustomAdapter);
-            //dvdCustomAdapter.notifyDataSetChanged();
-        } *///else {
-            //((DvdAdapter)mGridView.getAdapter()).refill(mDvdList);
-            //MainActivity.mGridView.getAdapter().refill(MainActivity.mDvdList);
-        //}
-
-
-        //Log.i(TAG, "dvdList size: " + netflix.mDvds.size());
-
-
-        //DvdAdapter dvdCustomAdapter = new DvdAdapter(this, mDvdList);
-        //mGridView.setAdapter(dvdCustomAdapter);
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        //this.setProgressBarIndeterminateVisibility(true);
-
         Log.i(TAG, "onResume mGridView.getAdapter: " + mGridView.getAdapter());
 
         Log.i(TAG, "mDvdList.size(): " + mDvdList.size());
         mGridView.setAdapter(mDvdCustomAdapter);
+
+        mGridView.setSelection(mIndex);
     }
 
     @Override
@@ -92,6 +76,15 @@ public class MainActivity extends Activity {
     public void onPause() {
         super.onPause();
         //mGetNetflix = true;
+        mOffset = (int)(mGridView.getVerticalSpacing() * getResources().getDisplayMetrics().density);
+        mIndex = mGridView.getFirstVisiblePosition();
+        final View first = mGridView.getChildAt(0);
+        if (first != null) {
+            mOffset -= first.getTop();
+        }
+
+        //mIndex = MainActivity.mGridView.getFirstVisiblePosition();
+
     }
 
     @Override
