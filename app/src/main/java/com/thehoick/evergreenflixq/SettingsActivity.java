@@ -3,6 +3,7 @@ package com.thehoick.evergreenflixq;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -35,6 +36,12 @@ public class SettingsActivity extends PreferenceActivity {
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.settings);
+
+        // Theme settings for the Settings page, not the Dialog.
+        getListView().setCacheColorHint(Color.TRANSPARENT);
+        getListView().setBackgroundColor(getResources().getColor(R.color.white));
+
+        //setTheme(R.style.PreferencesDialogTheme);
 
     }
 }
