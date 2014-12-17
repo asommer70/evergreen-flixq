@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -51,17 +52,18 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.dvd_item, null);
 
             holder = new ViewHolder();
-            holder.description = (TextView)convertView.findViewById(R.id.description);
+            holder.description = (TextView) convertView.findViewById(R.id.description);
             //holder.nameLabel = (TextView)convertView.findViewById(R.id.dvdTitle);
-            holder.dvdImage = (ImageView)convertView.findViewById(R.id.dvdImage);
-            holder.status = (TextView)convertView.findViewById(R.id.status);
+            holder.dvdImage = (ImageView) convertView.findViewById(R.id.dvdImage);
+            holder.status = (TextView) convertView.findViewById(R.id.status);
             //holder.libraries = (TableLayout)convertView.findViewById(R.id.libraries);
-            holder.libraryIcon = (ImageView)convertView.findViewById(R.id.libraryIcon);
-            holder.libraryProgress = (ProgressBar)convertView.findViewById(R.id.libraryProgress);
+            holder.libraryIcon = (ImageView) convertView.findViewById(R.id.libraryIcon);
+            holder.libraryProgress = (ProgressBar) convertView.findViewById(R.id.libraryProgress);
+            holder.libraryIconContainer = (RelativeLayout) convertView.findViewById(R.id.libraryIconContainer);
             convertView.setTag(holder);
 
         } else {
-            holder = (ViewHolder)convertView.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
 
         Dvd dvd = MainActivity.mDvdList.get(position);
@@ -76,11 +78,25 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
         //holder.dvdImage.setBackground(imageShadow);
         holder.status.setText(dvd.getStatus());
 
+        int red = convertView.getResources().getColor(R.color.red);
+        int green = convertView.getResources().getColor(R.color.green);
+        if (dvd.getStatus() == null) {
+            holder.libraryIcon.setImageResource(R.drawable.ic_library);
+        } else if (dvd.getStatus().equals("Not Available")) {
+            holder.status.setTextColor(red);
+            holder.libraryIcon.setImageResource(R.drawable.ic_library_red);
+        } else {
+            holder.status.setTextColor(green);
+            holder.libraryIcon.setImageResource(R.drawable.ic_library_green);
+        }
+
         if (dvd.getLibraryGotten()) {
             holder.libraryProgress.setVisibility(View.INVISIBLE);
         }
 
-        holder.dvdImage.setOnClickListener(new DvdOnClickListener(dvd, position) {
+        holder.dvdImage.setOnClickListener(new DvdOnClickListener(dvd, position,
+                holder.libraryIcon,
+                holder.status) {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -89,10 +105,14 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
             }
         });
 
-        holder.status.setOnClickListener(new DvdOnClickListener(dvd, position) {
+        holder.libraryIconContainer.setOnClickListener(new DvdOnClickListener(dvd, position,
+                holder.libraryIcon,
+                holder.status) {
             @Override
             public void onClick(View view) {
-                if (dvd.getStatus() != "Not Available") {
+                if (!dvd.getStatus().equals("Not Available")) {
+
+
                     MainActivity.mGetNetflix = false;
                     Intent intent = new Intent(mContext, LibrariesActivity.class);
                     intent.putExtra("position", position);
@@ -116,6 +136,7 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
         //TableLayout libraries;
         ImageView libraryIcon;
         ProgressBar libraryProgress;
+        RelativeLayout libraryIconContainer;
     }
 
     public void refill(List<Dvd> dvds) {
@@ -143,10 +164,14 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
 
         Dvd dvd;
         int position;
+        ImageView libraryIcon;
+        TextView status;
 
-        public DvdOnClickListener(Dvd dvd, int postition) {
+        public DvdOnClickListener(Dvd dvd, int postition, ImageView libraryIcon, TextView status) {
             this.position = postition;
             this.dvd = dvd;
+            this.libraryIcon = libraryIcon;
+            this.status = status;
         }
 
         @Override
