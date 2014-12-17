@@ -98,7 +98,7 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
 
             List<Element> channelChildren = channel.getChildren("item");
 
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < 3; i++) {
                 Element channelChild = channelChildren.get(i);
                 Element titleElement = channelChild.getChild("title");
                 Element description = channelChild.getChild("description");
@@ -113,7 +113,7 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
                 // Setup the DVD object.
                 Dvd dvd = new Dvd();
                 dvd.setTitle(titleElement.getValue().substring(5));
-                dvd.setDescription(descHtml.text());
+                dvd.setDescription(descHtml.text() + "\n");
 
                 dvd.setLink(link.attr("href"));
                 dvd.setImgUrl(img.attr("src").replace("small", "large"));

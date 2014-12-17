@@ -2,6 +2,7 @@ package com.thehoick.evergreenflixq;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.Html;
 import android.util.Log;
@@ -51,7 +52,7 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
 
             holder = new ViewHolder();
             holder.description = (TextView)convertView.findViewById(R.id.description);
-            holder.nameLabel = (TextView)convertView.findViewById(R.id.dvdTitle);
+            //holder.nameLabel = (TextView)convertView.findViewById(R.id.dvdTitle);
             holder.dvdImage = (ImageView)convertView.findViewById(R.id.dvdImage);
             holder.status = (TextView)convertView.findViewById(R.id.status);
             //holder.libraries = (TableLayout)convertView.findViewById(R.id.libraries);
@@ -65,12 +66,14 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
 
         Dvd dvd = MainActivity.mDvdList.get(position);
 
-        holder.nameLabel.setText(dvd.getTitle());
+        //holder.nameLabel.setText(dvd.getTitle());
         //holder.description.loadData(dvd.getDescription(), "text/html", null);
         //holder.description.setText(Html.fromHtml(dvd.getDescription()));
         holder.description.setText(dvd.getDescription());
 
         Picasso.with(MainActivity.mContext).load(dvd.getImgUrl()).into(holder.dvdImage);
+        //Drawable imageShadow = mContext.getResources().getDrawable(R.drawable.image_shadow);
+        //holder.dvdImage.setBackground(imageShadow);
         holder.status.setText(dvd.getStatus());
 
         if (dvd.getLibraryGotten()) {
@@ -108,7 +111,7 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
     private static class ViewHolder {
         TextView description;
         ImageView dvdImage;
-        TextView nameLabel;
+        //TextView nameLabel;
         TextView status;
         //TableLayout libraries;
         ImageView libraryIcon;

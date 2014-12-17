@@ -1,71 +1,104 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@android:color/white" >
+    android:background="@drawable/shadow">
 
-    <ImageView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        android:id="@+id/dvdImage"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"/>
+        android:paddingTop="15dip"
+        android:paddingBottom="15dip"
+        android:id="@+id/dvdHeader"
+        android:background="@color/white">
 
-    <TextView
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="150dp"
+            android:scaleType="fitXY"
+            android:id="@+id/dvdImage"
+            android:padding="8dp"
+            android:layout_marginStart="@dimen/activity_vertical_margin"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:background="@drawable/image_shadow"/>
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        android:id="@+id/dvdStatus"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@drawable/image_shadow">
+
+        <RelativeLayout
+            android:id="@+id/libraryIconContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/libraryIcon"
+                android:src="@drawable/ic_library"
+                android:layout_marginTop="@dimen/activity_vertical_margin"/>
+
+            <ProgressBar
+                android:id="@+id/libraryProgress"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="visible"
+                android:layout_marginTop="@dimen/activity_vertical_margin"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/status"
+            android:layout_below="@id/libraryIconContainer"
+            android:textColor="@android:color/holo_green_dark"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+
+<!--    <TextView
         android:id="@+id/dvdTitle"
         android:layout_width="wrap_content"
         android:layout_height="44dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/dvdImage"
         android:maxLines="2"
-        android:padding="4dp" />
+        android:padding="4dp" />-->
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/description"
-        android:layout_below="@id/dvdTitle"
+        android:layout_below="@id/dvdHeader"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"/>
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:layout_marginStart="@dimen/activity_vertical_margin"
+        android:layout_marginEnd="@dimen/activity_vertical_margin"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/status"
-        android:layout_below="@id/description"
-        android:textColor="@android:color/holo_green_dark"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"/>
 
-    <RelativeLayout
-        android:id="@+id/relative_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@id/status"
-        android:layout_below="@id/description">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/libraryIcon"
-            android:src="@drawable/ic_library"/>
-
-        <ProgressBar
-            android:id="@+id/libraryProgress"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:visibility="visible"/>
-
-     </RelativeLayout>
 
 </RelativeLayout>
