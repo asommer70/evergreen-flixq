@@ -1,12 +1,93 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.Evergreenflixq">
         <!-- Customize your theme here. -->
         <item name="android:textViewStyle">@style/TextViewStyle</item>
     </style>
 
     <style name="TextViewStyle" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+
+    <style name="Theme.Evergreenflixq" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:actionBarItemBackground">@drawable/selectable_background_evergreenflixq</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu.Evergreenflixq</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Evergreenflixq</item>
+        <item name="android:actionBarTabStyle">@style/ActionBarTabStyle.Evergreenflixq</item>
+        <item name="android:actionDropDownStyle">@style/DropDownNav.Evergreenflixq</item>
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.Evergreenflixq</item>
+        <item name="android:actionModeBackground">@drawable/cab_background_top_evergreenflixq</item>
+        <item name="android:actionModeSplitBackground">@drawable/cab_background_bottom_evergreenflixq</item>
+        <item name="android:actionModeCloseButtonStyle">@style/ActionButton.CloseMode.Evergreenflixq</item>
+
+        <!-- Light.DarkActionBar specific -->
+        <item name="android:actionBarWidgetTheme">@style/Theme.Evergreenflixq.Widget</item>
+        <item name="android:itemTextAppearance">@style/MenuTextAppearance</item>
+
+    </style>
+
+    <style name="ActionBar.Solid.Evergreenflixq" parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@drawable/ab_solid_evergreenflixq</item>
+        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_evergreenflixq</item>
+        <item name="android:backgroundSplit">@drawable/ab_bottom_solid_evergreenflixq</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.Evergreenflixq</item>
+
+        <!--<item name="android:titleTextStyle">@style/ActionBarTitleText</item>-->
+    </style>
+
+    <style name="ActionBar.Transparent.Evergreenflixq" parent="@android:style/Widget.Holo.ActionBar">
+        <item name="android:background">@drawable/ab_transparent_evergreenflixq</item>
+        <item name="android:progressBarStyle">@style/ProgressBar.Evergreenflixq</item>
+    </style>
+
+    <style name="PopupMenu.Evergreenflixq" parent="@android:style/Widget.Holo.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_evergreenflixq</item>
+<!--        <item name="android:popupBackground">@color/lighter_blue</item>
+        <item name="android:textColor">@color/black</item>-->
+    </style>
+
+    <style name="DropDownListView.Evergreenflixq" parent="@android:style/Widget.Holo.ListView.DropDown">
+        <item name="android:listSelector">@drawable/selectable_background_evergreenflixq</item>
+    </style>
+
+    <style name="ActionBarTabStyle.Evergreenflixq" parent="@android:style/Widget.Holo.ActionBar.TabView">
+        <item name="android:background">@drawable/tab_indicator_ab_evergreenflixq</item>
+    </style>
+
+    <style name="DropDownNav.Evergreenflixq" parent="@android:style/Widget.Holo.Spinner">
+        <item name="android:background">@drawable/spinner_background_ab_evergreenflixq</item>
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_evergreenflixq</item>
+        <item name="android:dropDownSelector">@drawable/selectable_background_evergreenflixq</item>
+    </style>
+
+    <style name="ProgressBar.Evergreenflixq" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">
+        <item name="android:progressDrawable">@drawable/progress_horizontal_evergreenflixq</item>
+    </style>
+
+    <style name="ActionButton.CloseMode.Evergreenflixq" parent="@android:style/Widget.Holo.ActionButton.CloseMode">
+        <item name="android:background">@drawable/btn_cab_done_evergreenflixq</item>
+    </style>
+
+    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
+    <style name="Theme.Evergreenflixq.Widget" parent="@android:style/Theme.Holo">
+        <item name="android:popupMenuStyle">@style/PopupMenu.Evergreenflixq</item>
+        <item name="android:dropDownListViewStyle">@style/DropDownListView.Evergreenflixq</item>
+    </style>
+
+
+<!--    <style name="ActionBarTitleText" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:actionMenuTextColor">@color/white</item>
+    </style>
+
+    <style name="ActionBarTabText" parent="@android:style/Widget.Holo.ActionBar.TabText">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:actionMenuTextColor">@color/white</item>
+    </style>-->
+
+    <style name="MenuTextAppearance">
         <item name="android:textColor">@color/black</item>
     </style>
 
