@@ -11,6 +11,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 
 public class LibrariesActivity extends Activity {
 
@@ -42,11 +44,12 @@ public class LibrariesActivity extends Activity {
             TableRow row = new TableRow(this);
             //TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
             //row.setLayoutParams(lp);
+            row.setPadding(4, 4, 4, 4);
 
             TextView name = new TextView(this);
             TextView status = new TextView(this);
-            name.setText(library.getName());
-            status.setText(library.getStatus());
+            name.setText("\t" + library.getName());
+            status.setText("\t\t\t\t\t" + library.getStatus());
 
             row.addView(name);
             row.addView(status);

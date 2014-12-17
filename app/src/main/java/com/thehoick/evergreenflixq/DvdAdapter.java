@@ -2,6 +2,7 @@ package com.thehoick.evergreenflixq;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.Html;
@@ -59,7 +60,8 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
             //holder.libraries = (TableLayout)convertView.findViewById(R.id.libraries);
             holder.libraryIcon = (ImageView) convertView.findViewById(R.id.libraryIcon);
             holder.libraryProgress = (ProgressBar) convertView.findViewById(R.id.libraryProgress);
-            holder.libraryIconContainer = (RelativeLayout) convertView.findViewById(R.id.libraryIconContainer);
+            holder.dvdStatus = (RelativeLayout) convertView.findViewById(R.id.dvdStatus);
+
             convertView.setTag(holder);
 
         } else {
@@ -94,9 +96,8 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
             holder.libraryProgress.setVisibility(View.INVISIBLE);
         }
 
-        holder.dvdImage.setOnClickListener(new DvdOnClickListener(dvd, position,
-                holder.libraryIcon,
-                holder.status) {
+
+        holder.dvdImage.setOnClickListener(new DvdOnClickListener(dvd, position) {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -105,14 +106,13 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
             }
         });
 
-        holder.libraryIconContainer.setOnClickListener(new DvdOnClickListener(dvd, position,
-                holder.libraryIcon,
-                holder.status) {
+        holder.dvdStatus.setOnClickListener(new DvdOnClickListener(dvd, position) {
             @Override
             public void onClick(View view) {
-                if (!dvd.getStatus().equals("Not Available")) {
-
-
+                if (dvd.getStatus() == null) {
+                    Toast.makeText(mContext, "Searching for, " + dvd.getTitle() +
+                            " please wait.", Toast.LENGTH_LONG).show();
+                } else if (!dvd.getStatus().equals("Not Available")) {
                     MainActivity.mGetNetflix = false;
                     Intent intent = new Intent(mContext, LibrariesActivity.class);
                     intent.putExtra("position", position);
@@ -136,7 +136,7 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
         //TableLayout libraries;
         ImageView libraryIcon;
         ProgressBar libraryProgress;
-        RelativeLayout libraryIconContainer;
+        RelativeLayout dvdStatus;
     }
 
     public void refill(List<Dvd> dvds) {
@@ -164,14 +164,10 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
 
         Dvd dvd;
         int position;
-        ImageView libraryIcon;
-        TextView status;
 
-        public DvdOnClickListener(Dvd dvd, int postition, ImageView libraryIcon, TextView status) {
+        public DvdOnClickListener(Dvd dvd, int postition) {
             this.position = postition;
             this.dvd = dvd;
-            this.libraryIcon = libraryIcon;
-            this.status = status;
         }
 
         @Override
