@@ -97,21 +97,24 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
         }
 
 
-        holder.dvdImage.setOnClickListener(new DvdOnClickListener(dvd, position) {
+        holder.dvdImage.setOnClickListener(new DvdOnClickListener(dvd, position, holder.dvdImage) {
             @Override
             public void onClick(View view) {
+                dvdImage.setAlpha(180);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(dvd.getLink()));
                 mContext.startActivity(intent);
             }
         });
 
-        holder.dvdStatus.setOnClickListener(new DvdOnClickListener(dvd, position) {
+        holder.dvdStatus.setOnClickListener(new DvdOnClickListener(dvd, position, holder.libraryIcon) {
             @Override
             public void onClick(View view) {
+                dvdImage.setImageAlpha(180);
                 if (dvd.getStatus() == null) {
                     Toast.makeText(mContext, "Searching for, " + dvd.getTitle() +
                             " please wait.", Toast.LENGTH_LONG).show();
+                    dvdImage.setImageAlpha(1);
                 } else if (!dvd.getStatus().equals("Not Available")) {
                     MainActivity.mGetNetflix = false;
                     Intent intent = new Intent(mContext, LibrariesActivity.class);
@@ -164,10 +167,12 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
 
         Dvd dvd;
         int position;
+        ImageView dvdImage;
 
-        public DvdOnClickListener(Dvd dvd, int postition) {
+        public DvdOnClickListener(Dvd dvd, int postition, ImageView dvdImage) {
             this.position = postition;
             this.dvd = dvd;
+            this.dvdImage = dvdImage;
         }
 
         @Override

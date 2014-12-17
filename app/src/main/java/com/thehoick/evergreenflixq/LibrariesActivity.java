@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -28,12 +29,20 @@ public class LibrariesActivity extends Activity {
 
         TableLayout tableLayout = (TableLayout)findViewById(R.id.libraries);
 
-        TextView libraryDvdTitle = (TextView)findViewById(R.id.libraryDvdTitle);
+        final TextView libraryDvdTitle = (TextView)findViewById(R.id.libraryDvdTitle);
         libraryDvdTitle.setText(dvd.getTitle());
 
         libraryDvdTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                AlphaAnimation alpha = new AlphaAnimation(0.5F, 0.5F);
+                alpha.setDuration(500); // Make animation instant
+                //alpha.setStartOffset(300);
+                //alpha.setFillAfter(true); // Tell it to persist after the animation ends
+                // And then on your layout
+                libraryDvdTitle.startAnimation(alpha);
+
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(dvd.getEvergreenLink()));
                 startActivity(intent);
