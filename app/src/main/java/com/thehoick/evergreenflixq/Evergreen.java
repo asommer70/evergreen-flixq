@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import org.jdom2.Element;
 import org.jsoup.Jsoup;
@@ -34,7 +35,6 @@ public class Evergreen extends AsyncTask<Dvd, Void, String> {
     public static String mLibraryUrlBegin = "/eg/opac/results?query=";
     public static String mLibraryUrlEnd = "&qtype=keyword&fi%3Asearch_format=dvd&locg=126&sort=";
 
-
     protected String doInBackground(Dvd... args) {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.mContext);
@@ -54,6 +54,8 @@ public class Evergreen extends AsyncTask<Dvd, Void, String> {
                         .timeout(6000).get();
             } catch (IOException e) {
                 e.printStackTrace();
+                //Toast.makeText(MainActivity.mContext, "There is a problem with your Library URL.", Toast.LENGTH_LONG).show();
+                Netflix.mLibraryUrlProblem = true;
             }
 
             Pattern p = Pattern.compile(dvd.getTitle().toLowerCase(), Pattern.CASE_INSENSITIVE);
@@ -124,7 +126,6 @@ public class Evergreen extends AsyncTask<Dvd, Void, String> {
         //mProgressDialog = ProgressDialog.show(MainActivity.mContext, "Loading",
         //        "Fetching information from Evergreen...", true);
 
-
     }
 
     protected void onPostExecute(String res) {
@@ -133,6 +134,13 @@ public class Evergreen extends AsyncTask<Dvd, Void, String> {
         //DvdAdapter dvdCustomAdapter = new DvdAdapter(MainActivity.mContext, MainActivity.mDvdList);
         //dvdCustomAdapter.notifyDataSetChanged();
         //MainActivity.mGridView.setAdapter(dvdCustomAdapter);
+
+
+        /*if (mUrlProblem) {
+            Toast.makeText(MainActivity.mContext, "There is a problem with your Library URL.",
+                    Toast.LENGTH_LONG).show();
+        }*/
+
         MainActivity.mDvdCustomAdapter.notifyDataSetChanged();
 
     }

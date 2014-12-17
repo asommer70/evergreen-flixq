@@ -1,6 +1,7 @@
 package com.thehoick.evergreenflixq;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -8,6 +9,7 @@ import android.util.Log;
 import android.util.Xml;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -38,6 +40,9 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
 
     private static final String TAG = Netflix.class.getSimpleName();
     private ProgressDialog dialog = new ProgressDialog(MainActivity.mContext);
+    private boolean mUrlProblem = false;
+
+    public static boolean mLibraryUrlProblem = false;
 
     @Override
     protected List<Dvd> doInBackground(String... arg) {
@@ -52,12 +57,14 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
             url = new URL(qUrl);
         } catch (MalformedURLException e) {
             e.printStackTrace();
+            mUrlProblem = true;
         }
         HttpURLConnection conn = null;
         try {
             conn = (HttpURLConnection) url.openConnection();
         } catch (IOException e) {
             e.printStackTrace();
+            mUrlProblem = true;
         }
         conn.setReadTimeout(10000 /* milliseconds */);
         conn.setConnectTimeout(15000 /* milliseconds */);
@@ -65,6 +72,7 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
             conn.setRequestMethod("GET");
         } catch (ProtocolException e) {
             e.printStackTrace();
+            mUrlProblem = true;
         }
         conn.setDoInput(true);
         // Starts the query
@@ -74,6 +82,7 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
             stream = conn.getInputStream();
         } catch (IOException e) {
             e.printStackTrace();
+            mUrlProblem = true;
         }
 
         // Parse the feed XML.
@@ -86,8 +95,10 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
             jdomDocument = jdomBuilder.build(stream);
         } catch (JDOMException e) {
             e.printStackTrace();
+            mUrlProblem = true;
         } catch (IOException e) {
             e.printStackTrace();
+            mUrlProblem = true;
         }
 
         List<Dvd> dvds = new ArrayList<Dvd>();
@@ -137,31 +148,54 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
             dialog.dismiss();
         }
 
-
-        MainActivity.mDvdList = dvds;
-
-        //Log.i(TAG, "dvds size: " + dvds.size());
-
-        Log.i(TAG, "mGridView adapter: " + MainActivity.mGridView.getAdapter());
-
-        if (MainActivity.mGetNetflix) {
-            // I think I have to call this here because the MainActivity.mDvdList isn't populated
-            // until the AsyncTask is done and the adapter won't fire getView() until there is items
-            // in the List.
-            //
-
-            for (Dvd dvd : MainActivity.mDvdList) {
-                Evergreen evergreen = new Evergreen();
-                evergreen.execute(dvd);
-            }
-
-            MainActivity.mDvdCustomAdapter = new DvdAdapter(MainActivity.mContext, dvds);
-            MainActivity.mGridView.setAdapter(MainActivity.mDvdCustomAdapter);
-
-            MainActivity.mGetNetflix = false;
+        if (mUrlProblem) {
+            Toast.makeText(MainActivity.mContext, "There is a problem with your Netflix URL.",
+                    Toast.LENGTH_LONG).show();
         } else {
-            ((DvdAdapter)MainActivity.mGridView.getAdapter()).refill(MainActivity.mDvdList);
+
+
+            MainActivity.mDvdList = dvds;
+
+            //Log.i(TAG, "dvds size: " + dvds.size());
+
+            Log.i(TAG, "mGridView adapter: " + MainActivity.mGridView.getAdapter());
+
+            if (MainActivity.mGetNetflix) {
+                // I think I have to call this here because the MainActivity.mDvdList isn't populated
+                // until the AsyncTask is done and the adapter won't fire getView() until there is items
+                // in the List.
+                //
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.mContext);
+                String libraryUrl = prefs.getString("libraryUrl", "");
+
+                // Check for https
+                if (libraryUrl.contains("https") || mLibraryUrlProblem) {
+                    Toast.makeText(MainActivity.mContext, "There is a problem with your Library URL.",
+                            Toast.LENGTH_LONG).show();
+
+                } else {
+                    for (Dvd dvd : MainActivity.mDvdList) {
+                        Evergreen evergreen = new Evergreen();
+                        evergreen.execute(dvd);
+                    }
+                }
+
+                MainActivity.mDvdCustomAdapter = new DvdAdapter(MainActivity.mContext, dvds);
+                MainActivity.mGridView.setAdapter(MainActivity.mDvdCustomAdapter);
+
+                MainActivity.mGetNetflix = false;
+            } else {
+                ((DvdAdapter) MainActivity.mGridView.getAdapter()).refill(MainActivity.mDvdList);
+            }
         }
+    }
+
+    public static boolean ismLibraryUrlProblem() {
+        return mLibraryUrlProblem;
+    }
+
+    public static void setmLibraryUrlProblem(boolean mLibraryUrlProblem) {
+        Netflix.mLibraryUrlProblem = mLibraryUrlProblem;
     }
 
 }

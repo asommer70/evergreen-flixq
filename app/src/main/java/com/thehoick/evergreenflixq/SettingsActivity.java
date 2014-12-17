@@ -43,5 +43,9 @@ public class SettingsActivity extends PreferenceActivity {
 
         //setTheme(R.style.PreferencesDialogTheme);
 
+        Netflix netflix = new Netflix();
+        netflix.setmLibraryUrlProblem(false);
+
+
     }
 }
