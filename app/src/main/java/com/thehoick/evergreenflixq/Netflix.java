@@ -109,7 +109,8 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
 
             List<Element> channelChildren = channel.getChildren("item");
 
-            for (int i = 0; i < 10; i++) {
+            //for (int i = 0; i < channelChildren.size(); i++) {
+            for (int i = 0; i < 3; i++) {
                 Element channelChild = channelChildren.get(i);
                 Element titleElement = channelChild.getChild("title");
                 Element description = channelChild.getChild("description");
@@ -139,13 +140,13 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
 
     @Override
     protected void onPreExecute() {
-        this.dialog.setMessage("Please wait");
-        this.dialog.show();
+        //this.dialog.setMessage("Please wait");
+        //this.dialog.show();
     }
 
     protected void onPostExecute(List<Dvd> dvds) {
-        if (dialog.isShowing()) {
-            dialog.dismiss();
+        if (MainActivity.mDialog.isShowing()) {
+            MainActivity.mDialog.dismiss();
         }
 
         if (mUrlProblem) {

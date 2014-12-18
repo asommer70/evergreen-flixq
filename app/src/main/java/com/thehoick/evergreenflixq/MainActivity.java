@@ -1,10 +1,13 @@
 package com.thehoick.evergreenflixq;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +32,7 @@ public class MainActivity extends Activity {
     private int mOffset;
     private int mIndex;
 
+    public static ProgressDialog mDialog;
     public static GridView mGridView;
     public static Context mContext;
 
@@ -46,11 +50,24 @@ public class MainActivity extends Activity {
         mContext = this;
         mGridView = (GridView)findViewById(R.id.dvds);
 
-        Log.i(TAG, "MainActivity mGridView adapter: " + mGridView.getAdapter());
 
-        if (mGetNetflix) {
-            Netflix netflix = new Netflix();
-            netflix.execute();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String qUrl = prefs.getString("netflixUrl", "default");
+        if (qUrl.equals("default")) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            this.startActivity(intent);
+        } else {
+
+            mDialog = new ProgressDialog(MainActivity.mContext);
+            mDialog.setMessage("Please wait");
+            mDialog.show();
+
+            Log.i(TAG, "MainActivity mGridView adapter: " + mGridView.getAdapter());
+
+            if (mGetNetflix) {
+                Netflix netflix = new Netflix();
+                netflix.execute();
+            }
         }
     }
 
@@ -126,4 +143,12 @@ public class MainActivity extends Activity {
 
         }
     };
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (mDialog != null)
+            mDialog.dismiss();
+    }
 }

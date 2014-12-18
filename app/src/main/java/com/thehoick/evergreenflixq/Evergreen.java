@@ -89,17 +89,34 @@ public class Evergreen extends AsyncTask<Dvd, Void, String> {
 
                             Elements libraries = result.select("a[typeof=\"Library\"");
                             List<Library> libraryList = new ArrayList<Library>();
-                            for (org.jsoup.nodes.Element a : libraries) {
-                                Library library = new Library();
 
-                                String library_name = a.children().get(0).text();
-                                library.setName(library_name);
+                            if (libraries.size() == 0) {
+                                Elements result_counts = result.select(".result_count");
+                                for (org.jsoup.nodes.Element res : result_counts) {
+                                    Library library = new Library();
 
-                                String status = a.parent().nextElementSibling()
-                                        .nextElementSibling().nextElementSibling().text();
-                                library.setStatus(status);
-                                libraryList.add(library);
-                                Log.i(TAG, "Library: " + library_name + " status: " + status);
+                                    String library_name[] = res.text().split(" at ");
+                                    library.setName(library_name[1]);
+                                    System.out.println("Library: " + library.getName());
+
+                                    library.setStatus("Unknown");
+
+                                    libraryList.add(library);
+                                    dvd.setLibraryGotten(true);
+                                }
+                            } else {
+                                for (org.jsoup.nodes.Element a : libraries) {
+                                    Library library = new Library();
+
+                                    String library_name = a.children().get(0).text();
+                                    library.setName(library_name);
+
+                                    String status = a.parent().nextElementSibling()
+                                            .nextElementSibling().nextElementSibling().text();
+                                    library.setStatus(status);
+                                    libraryList.add(library);
+                                    Log.i(TAG, "Library: " + library_name + " status: " + status);
+                                }
                             }
 
                             dvd.setLibaries(libraryList);
@@ -142,6 +159,5 @@ public class Evergreen extends AsyncTask<Dvd, Void, String> {
         }*/
 
         MainActivity.mDvdCustomAdapter.notifyDataSetChanged();
-
     }
 }
