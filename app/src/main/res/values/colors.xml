@@ -14,5 +14,8 @@
     <color name="red">#E44431</color>
     <color name="green">#3C9872</color>
 
+    <color name="dark_shadow_gray">#30807e74</color>
+    <color name="shadow_gray">#30ADACA7</color>
+
     <color name="apptheme_color">#4c7e90</color>
 </resources>
