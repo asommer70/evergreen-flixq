@@ -139,6 +139,13 @@ public class MainActivity extends Activity {
         } else if (id == R.id.action_help) {
             Intent intent = new Intent(this, HelpActivity.class);
             this.startActivity(intent);
+        } else if (id == R.id.action_feedback) {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"adam@thehoick.com"});
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Feedback About Evergreen FlixQ.");
+
+            startActivity(Intent.createChooser(intent, "Send Email"));
         }
         return super.onOptionsItemSelected(item);
     }

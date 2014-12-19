@@ -17,6 +17,7 @@
     <string name="netflix_config_warning">Please configure a URL for your Netflix DVD Queue RSS URL.</string>
     <string name="evergreen_config_warning">Please configure a URL for your Library\'s Evergreen ILS.</string>
     <string name="title_activity_help">Help</string>
+    <string name="action_feedback">Feedback</string>
 
     <string name="netflix_fullsite"><b><font size="18">Netflix URL</font></b>\n\nTo find the RSS feed URL for your
     Netflix DVD Queue open your browser and go to <b>netflix.com</b>. If you are on a phone you may see the mobile
