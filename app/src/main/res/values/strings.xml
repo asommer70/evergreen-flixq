@@ -16,5 +16,31 @@
     <string name="action_refresh">Refresh</string>
     <string name="netflix_config_warning">Please configure a URL for your Netflix DVD Queue RSS URL.</string>
     <string name="evergreen_config_warning">Please configure a URL for your Library\'s Evergreen ILS.</string>
+    <string name="title_activity_help">Help</string>
 
+    <string name="netflix_fullsite"><b><font size="18">Netflix URL</font></b>\n\nTo find the RSS feed URL for your
+    Netflix DVD Queue open your browser and go to <b>netflix.com</b>. If you are on a phone you may see the mobile
+    version of the website, but we want the full version.  Scroll down to the bottom and click the
+    <b>\"View Full Site\"</b> link pictured below.\n\n</string>
+
+    <string name="netflix_rss_link">Now that you are at the full site, scroll to the bottom and click the
+    <b>\"RSS Feeds\"</b> link.\n\n</string>
+    
+    <string name="netflix_queue_rss">On the Feeds page the link we are looking for is the <b>\"Queue\"</b> link.
+    Go ahead and give it a clicky click (or touchy touch as the case may be).\n\n</string>
+
+    <string name="netflix_rss_url">You should now see a page with a lot of funny text, this is exactly the page
+    we are looking for. Go to the address bar of the browser and <b>copy</b> the entire URL.\n\nFinally, open
+    Evergreen FlixQ back up and <b>paste</b> the URL into the Netflix RSS URL text box.\n\n</string>
+
+    <string name="evergreen_url"><font size="18"><b>Netflix URL</b></font>\n\nTo find the URL for your local library,
+    or statewide library, open a web browser and go to your libraries website. There is usually a link for the
+    "Search Catalog", "Library Catalog", or wherever you can search for things.\n\n<b>Note:</b> your library has to
+    use the Evergreen ILS system for this app to work.\n\nOnce you have found the link to your library\'s Evergreen
+    <b>copy</b> the base part of the URL. See the example highlighted below:\n\n</string>
+
+    <string name="evergreen_paste">Now just <b>paste</b> that sweet text into the <b>\"Library Search URL\"</b> text
+    box back in the Evergreen FlixQ app.\n\nHurray! With both URLs configured you can now lookup DVDs in your
+    Netflix Queue at your library. Should help pare that monster down (or maybe I\'m the only one with over 100 DVDs in
+    their queue hmmmmm).\n</string>
 </resources>

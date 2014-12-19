@@ -136,6 +136,9 @@ public class MainActivity extends Activity {
                 netflix.execute();
                 mGetNetflix = true;
             }
+        } else if (id == R.id.action_help) {
+            Intent intent = new Intent(this, HelpActivity.class);
+            this.startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
