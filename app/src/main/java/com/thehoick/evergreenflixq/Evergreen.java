@@ -1,24 +1,14 @@
 package com.thehoick.evergreenflixq;
 
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Window;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.Toast;
-
-import org.jdom2.Element;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.nio.charset.MalformedInputException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -33,7 +23,7 @@ public class Evergreen extends AsyncTask<Dvd, Void, String> {
     private static final String TAG = Evergreen.class.getSimpleName();
 
     public static String mLibraryUrlBegin = "/eg/opac/results?query=";
-    public static String mLibraryUrlEnd = "&qtype=keyword&fi%3Asearch_format=dvd&locg=126&sort=";
+    public static String mLibraryUrlEnd = "&qtype=keyword&fi%3Asearch_format=dvd&sort=";
 
     protected String doInBackground(Dvd... args) {
 
@@ -47,6 +37,7 @@ public class Evergreen extends AsyncTask<Dvd, Void, String> {
             Dvd dvd = args[0];
 
             Log.i(TAG, "evergreen title: " + dvd.getTitle());
+            Log.i(TAG, libraryUrl + mLibraryUrlBegin + dvd.getTitle() + mLibraryUrlEnd);
 
             Document doc = null;
             try {
@@ -54,7 +45,6 @@ public class Evergreen extends AsyncTask<Dvd, Void, String> {
                         .timeout(6000).get();
             } catch (IOException e) {
                 e.printStackTrace();
-                //Toast.makeText(MainActivity.mContext, "There is a problem with your Library URL.", Toast.LENGTH_LONG).show();
                 Netflix.mLibraryUrlProblem = true;
             }
 
@@ -63,12 +53,14 @@ public class Evergreen extends AsyncTask<Dvd, Void, String> {
             Elements zero_search_hits = null;
             if (doc != null) {
                 zero_search_hits = doc.select("#zero_search_hits");
+                for (org.jsoup.nodes.Element searchHit : zero_search_hits) {
+                    Log.i(TAG, "zero_search_hits.text: " + searchHit.text());
+                }
                 if (zero_search_hits.size() != 0) {
                     dvd.setStatus("Not Available");
                     Log.i(TAG, "Sorry nothing for: " + dvd.getTitle());
-                    //break;
+                    dvd.setLibraryGotten(true);
                 } else {
-                    //Log.i(TAG, "We might have something for: " + dvd.getTitle());
 
                     Elements results = doc.select(".result_metadata");
                     for (org.jsoup.nodes.Element result : results) {
@@ -78,14 +70,8 @@ public class Evergreen extends AsyncTask<Dvd, Void, String> {
                         boolean b = m.find();
 
                         if (b) {
-                            // Check the actual status option in the table.
                             dvd.setStatus("Available");
-                            // Or 'Checked Out'
-
-                            dvd.setEvergreenLink("http://appalachian.nccardinal.org" +
-                                    record_title.attr("href"));
-                            //Log.i(TAG, "The library has a copy of: " + dvd.getTitle());
-                            //Log.i(TAG, result.attr("href"));
+                            dvd.setEvergreenLink(libraryUrl + record_title.attr("href"));
 
                             Elements libraries = result.select("a[typeof=\"Library\"");
                             List<Library> libraryList = new ArrayList<Library>();
@@ -97,7 +83,7 @@ public class Evergreen extends AsyncTask<Dvd, Void, String> {
 
                                     String library_name[] = res.text().split(" at ");
                                     library.setName(library_name[1]);
-                                    System.out.println("Library: " + library.getName());
+                                    Log.i(TAG, "Library non-NCC: " + library.getName());
 
                                     library.setStatus("Unknown");
 
@@ -139,24 +125,9 @@ public class Evergreen extends AsyncTask<Dvd, Void, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-
-        //mProgressDialog = ProgressDialog.show(MainActivity.mContext, "Loading",
-        //        "Fetching information from Evergreen...", true);
-
     }
 
     protected void onPostExecute(String res) {
-
-        //mProgressDialog.dismiss();
-        //DvdAdapter dvdCustomAdapter = new DvdAdapter(MainActivity.mContext, MainActivity.mDvdList);
-        //dvdCustomAdapter.notifyDataSetChanged();
-        //MainActivity.mGridView.setAdapter(dvdCustomAdapter);
-
-
-        /*if (mUrlProblem) {
-            Toast.makeText(MainActivity.mContext, "There is a problem with your Library URL.",
-                    Toast.LENGTH_LONG).show();
-        }*/
 
         MainActivity.mDvdCustomAdapter.notifyDataSetChanged();
     }
