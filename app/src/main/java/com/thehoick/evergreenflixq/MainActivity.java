@@ -16,6 +16,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import org.jdom2.JDOMException;
 import org.w3c.dom.Document;
@@ -51,9 +52,7 @@ public class MainActivity extends Activity {
         mGridView = (GridView)findViewById(R.id.dvds);
 
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String qUrl = prefs.getString("netflixUrl", "default");
-        if (qUrl.equals("default")) {
+        if (checkUrls()) {
             Intent intent = new Intent(this, SettingsActivity.class);
             this.startActivity(intent);
         } else {
@@ -75,9 +74,14 @@ public class MainActivity extends Activity {
     public void onResume() {
         super.onResume();
 
-        Log.i(TAG, "onResume mGridView.getAdapter: " + mGridView.getAdapter());
+        //Log.i(TAG, "onResume mGridView.getAdapter: " + mGridView.getAdapter());
+        //Log.i(TAG, "mDvdList.size(): " + mDvdList.size());
 
-        Log.i(TAG, "mDvdList.size(): " + mDvdList.size());
+        if (checkUrls()) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            this.startActivity(intent);
+        }
+
         mGridView.setAdapter(mDvdCustomAdapter);
 
         mGridView.setSelection(mIndex);
@@ -124,9 +128,14 @@ public class MainActivity extends Activity {
 
             return true;
         } else if (id == R.id.action_refresh) {
-            Netflix netflix = new Netflix();
-            netflix.execute();
-            mGetNetflix = true;
+            if (checkUrls()) {
+                Intent intent = new Intent(this, SettingsActivity.class);
+                this.startActivity(intent);
+            } else {
+                Netflix netflix = new Netflix();
+                netflix.execute();
+                mGetNetflix = true;
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -150,5 +159,28 @@ public class MainActivity extends Activity {
 
         if (mDialog != null)
             mDialog.dismiss();
+    }
+
+    private boolean checkUrls() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String netflixUrl = prefs.getString("netflixUrl", "");
+        String evergreenUrl = prefs.getString("libraryUrl", "");
+
+        boolean problem = false;
+        if (netflixUrl.equals("")) {
+            Toast.makeText(this, R.string.netflix_config_warning, Toast.LENGTH_LONG).show();
+            problem = true;
+        }
+
+        if (evergreenUrl.equals("")) {
+            Toast.makeText(this, R.string.evergreen_config_warning, Toast.LENGTH_LONG).show();
+            problem = true;
+        }
+
+        if (problem) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

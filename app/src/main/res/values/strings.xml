@@ -14,5 +14,7 @@
     <string name="title_activity_libraries">Libraries</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_refresh">Refresh</string>
+    <string name="netflix_config_warning">Please configure a URL for your Netflix DVD Queue RSS URL.</string>
+    <string name="evergreen_config_warning">Please configure a URL for your Library\'s Evergreen ILS.</string>
 
 </resources>
