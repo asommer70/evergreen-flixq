@@ -1,7 +1,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="fill_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
@@ -10,27 +10,28 @@
     android:background="@color/light_gray">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:background="@drawable/shadow"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin">
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:paddingBottom="16dp"
+        android:id="@+id/relativeWrapper">
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/netflixFullSite"
         android:text="@string/netflix_fullsite"/>
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:src="@drawable/full_site"
         android:layout_below="@+id/netflixFullSite"
         android:id="@+id/netflixFullSiteImage"
@@ -62,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/rss_feeds"
-            android:layout_below="@+id/netflixRssLink"
+            android:layout_below="@+id/netflixRssQueue"
             android:id="@+id/netflixRssQueueImage"/>
 
         <TextView
@@ -74,11 +75,39 @@
 
     </RelativeLayout>
 
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeWrapper"
+        android:background="@drawable/shadow"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/evergreenConfig"
-            android:background="@drawable/shadow"/>
+            android:text="@string/evergreen_url"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/evergreenConfig"
+            android:id="@+id/evergreenConfigUrl"
+            android:src="@drawable/evergreen_url"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/evergreenPaste"
+            android:text="@string/evergreen_paste"
+            android:layout_below="@id/evergreenConfigUrl"/>
+    </RelativeLayout>
+
     </RelativeLayout>
 
 
