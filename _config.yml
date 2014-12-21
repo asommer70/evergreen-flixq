@@ -1,0 +1,15 @@
+# Site settings
+title: Evergreen FlixQ
+email: adam@thehoick.com
+description: "Evergreen FlixQ is an app to lookup DVDs in your Netflix Queue at your local library."
+baseurl: ""
+url: "http://evergreenflixq.thehoick.com"
+twitter_username: asommer
+github_username:  asommer70
+
+# Build settings
+markdown: kramdown
+permalink: pretty
+
+sass:
+  sass_dir: _sass
