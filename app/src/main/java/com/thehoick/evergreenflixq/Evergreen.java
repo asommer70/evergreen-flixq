@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
  * Created by adam on 12/4/14.
  * Class for parsing HTML from Evergreen OPAC search results.
  */
-//public class Evergreen implements Runnable {
 public class Evergreen extends AsyncTask<Dvd, Void, String> {
     private static final String TAG = Evergreen.class.getSimpleName();
 
@@ -30,94 +29,81 @@ public class Evergreen extends AsyncTask<Dvd, Void, String> {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.mContext);
         String libraryUrl = prefs.getString("libraryUrl", "");
 
-        // Need to fire this AsyncTask for each DVD and not loop through each DVD in the task.
-        //for (int i = 0; i < MainActivity.mDvdList.size(); i++) {
+        Dvd dvd = args[0];
 
-            //Dvd dvd = MainActivity.mDvdList.get(i);
-            Dvd dvd = args[0];
+        Document doc = null;
+        try {
+            doc = Jsoup.connect(libraryUrl + mLibraryUrlBegin + dvd.getTitle() + mLibraryUrlEnd)
+                    .timeout(6000).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Netflix.mLibraryUrlProblem = true;
+        }
 
-            Log.i(TAG, "evergreen title: " + dvd.getTitle());
-            Log.i(TAG, libraryUrl + mLibraryUrlBegin + dvd.getTitle() + mLibraryUrlEnd);
+        Pattern p = Pattern.compile(dvd.getTitle().toLowerCase(), Pattern.CASE_INSENSITIVE);
 
-            Document doc = null;
-            try {
-                doc = Jsoup.connect(libraryUrl + mLibraryUrlBegin + dvd.getTitle() + mLibraryUrlEnd)
-                        .timeout(6000).get();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Netflix.mLibraryUrlProblem = true;
-            }
+        Elements zero_search_hits;
+        if (doc != null) {
+            zero_search_hits = doc.select("#zero_search_hits");
+            if (zero_search_hits.size() != 0) {
+                dvd.setStatus("Not Available");
+                dvd.setLibraryGotten(true);
+            } else {
 
-            Pattern p = Pattern.compile(dvd.getTitle().toLowerCase(), Pattern.CASE_INSENSITIVE);
+                Elements results = doc.select(".result_metadata");
+                for (org.jsoup.nodes.Element result : results) {
 
-            Elements zero_search_hits = null;
-            if (doc != null) {
-                zero_search_hits = doc.select("#zero_search_hits");
-                for (org.jsoup.nodes.Element searchHit : zero_search_hits) {
-                    Log.i(TAG, "zero_search_hits.text: " + searchHit.text());
-                }
-                if (zero_search_hits.size() != 0) {
-                    dvd.setStatus("Not Available");
-                    Log.i(TAG, "Sorry nothing for: " + dvd.getTitle());
-                    dvd.setLibraryGotten(true);
-                } else {
+                    Elements record_title = result.select(".record_title");
+                    Matcher m = p.matcher(record_title.text().toLowerCase());
+                    boolean b = m.find();
 
-                    Elements results = doc.select(".result_metadata");
-                    for (org.jsoup.nodes.Element result : results) {
+                    if (b) {
+                        dvd.setStatus("Available");
+                        dvd.setEvergreenLink(libraryUrl + record_title.attr("href"));
 
-                        Elements record_title = result.select(".record_title");
-                        Matcher m = p.matcher(record_title.text().toLowerCase());
-                        boolean b = m.find();
+                        Elements libraries = result.select("a[typeof=\"Library\"");
+                        List<Library> libraryList = new ArrayList<Library>();
 
-                        if (b) {
-                            dvd.setStatus("Available");
-                            dvd.setEvergreenLink(libraryUrl + record_title.attr("href"));
+                        if (libraries.size() == 0) {
+                            Elements result_counts = result.select(".result_count");
+                            for (org.jsoup.nodes.Element res : result_counts) {
+                                Library library = new Library();
 
-                            Elements libraries = result.select("a[typeof=\"Library\"");
-                            List<Library> libraryList = new ArrayList<Library>();
+                                String library_name[] = res.text().split(" at ");
+                                library.setName(library_name[1]);
 
-                            if (libraries.size() == 0) {
-                                Elements result_counts = result.select(".result_count");
-                                for (org.jsoup.nodes.Element res : result_counts) {
-                                    Library library = new Library();
+                                library.setStatus("Unknown");
 
-                                    String library_name[] = res.text().split(" at ");
-                                    library.setName(library_name[1]);
-                                    Log.i(TAG, "Library non-NCC: " + library.getName());
-
-                                    library.setStatus("Unknown");
-
-                                    libraryList.add(library);
-                                    dvd.setLibraryGotten(true);
-                                }
-                            } else {
-                                for (org.jsoup.nodes.Element a : libraries) {
-                                    Library library = new Library();
-
-                                    String library_name = a.children().get(0).text();
-                                    library.setName(library_name);
-
-                                    String status = a.parent().nextElementSibling()
-                                            .nextElementSibling().nextElementSibling().text();
-                                    library.setStatus(status);
-                                    libraryList.add(library);
-                                    Log.i(TAG, "Library: " + library_name + " status: " + status);
-                                }
+                                libraryList.add(library);
+                                dvd.setLibraryGotten(true);
                             }
-
-                            dvd.setLibaries(libraryList);
-                            dvd.setLibraryGotten(true);
-                            break;
                         } else {
-                            dvd.setEvergreenLink(libraryUrl + mLibraryUrlBegin + dvd.getTitle() +
-                                  mLibraryUrlEnd);
-                            dvd.setStatus("Not Available");
-                            dvd.setLibraryGotten(true);
+                            for (org.jsoup.nodes.Element a : libraries) {
+                                Library library = new Library();
+
+                                String library_name = a.children().get(0).text();
+                                library.setName(library_name);
+
+                                String status = a.parent().nextElementSibling()
+                                        .nextElementSibling().nextElementSibling().text();
+                                library.setStatus(status);
+                                libraryList.add(library);
+                                //Log.i(TAG, "Library: " + library_name + " status: " + status);
+                            }
                         }
+
+                        dvd.setLibaries(libraryList);
+                        dvd.setLibraryGotten(true);
+                        break;
+                    } else {
+                        dvd.setEvergreenLink(libraryUrl + mLibraryUrlBegin + dvd.getTitle() +
+                                mLibraryUrlEnd);
+                        dvd.setStatus("Not Available");
+                        dvd.setLibraryGotten(true);
                     }
                 }
             }
-        //}
+        }
         return null;
     }
 

@@ -2,32 +2,20 @@ package com.thehoick.evergreenflixq;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-
-import javax.xml.datatype.Duration;
 
 /**
  * Created by adam on 12/8/14.
@@ -54,10 +42,8 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
 
             holder = new ViewHolder();
             holder.description = (TextView) convertView.findViewById(R.id.description);
-            //holder.nameLabel = (TextView)convertView.findViewById(R.id.dvdTitle);
             holder.dvdImage = (ImageView) convertView.findViewById(R.id.dvdImage);
             holder.status = (TextView) convertView.findViewById(R.id.status);
-            //holder.libraries = (TableLayout)convertView.findViewById(R.id.libraries);
             holder.libraryIcon = (ImageView) convertView.findViewById(R.id.libraryIcon);
             holder.libraryProgress = (ProgressBar) convertView.findViewById(R.id.libraryProgress);
             holder.dvdStatus = (RelativeLayout) convertView.findViewById(R.id.dvdStatus);
@@ -70,14 +56,9 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
 
         Dvd dvd = MainActivity.mDvdList.get(position);
 
-        //holder.nameLabel.setText(dvd.getTitle());
-        //holder.description.loadData(dvd.getDescription(), "text/html", null);
-        //holder.description.setText(Html.fromHtml(dvd.getDescription()));
         holder.description.setText(dvd.getDescription());
 
         Picasso.with(MainActivity.mContext).load(dvd.getImgUrl()).into(holder.dvdImage);
-        //Drawable imageShadow = mContext.getResources().getDrawable(R.drawable.image_shadow);
-        //holder.dvdImage.setBackground(imageShadow);
         holder.status.setText(dvd.getStatus());
 
         int red = convertView.getResources().getColor(R.color.red);
@@ -100,7 +81,7 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
         holder.dvdImage.setOnClickListener(new DvdOnClickListener(dvd, position, holder.dvdImage) {
             @Override
             public void onClick(View view) {
-                dvdImage.setAlpha(180);
+                dvdImage.setImageAlpha(180);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(dvd.getLink()));
                 mContext.startActivity(intent);
@@ -134,9 +115,7 @@ public class DvdAdapter extends ArrayAdapter<Dvd> {
     private static class ViewHolder {
         TextView description;
         ImageView dvdImage;
-        //TextView nameLabel;
         TextView status;
-        //TableLayout libraries;
         ImageView libraryIcon;
         ProgressBar libraryProgress;
         RelativeLayout dvdStatus;

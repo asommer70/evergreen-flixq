@@ -1,14 +1,8 @@
 package com.thehoick.evergreenflixq;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
-import android.util.Log;
-import android.util.Xml;
-import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import org.jdom2.Document;
@@ -17,17 +11,13 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,10 +26,8 @@ import java.util.List;
  * Parses the RSS feed from Netflix DVD Queue.
  */
 public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
-//public class Netflix extends AsyncTask<String, Void, String> {
 
     private static final String TAG = Netflix.class.getSimpleName();
-    private ProgressDialog dialog = new ProgressDialog(MainActivity.mContext);
     private boolean mUrlProblem = false;
 
     public static boolean mLibraryUrlProblem = false;
@@ -78,7 +66,7 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
         // Starts the query
         try {
             conn.connect();
-            Log.i(TAG, "Getting RSS from Netflix...");
+            //Log.i(TAG, "Getting RSS from Netflix...");
             stream = conn.getInputStream();
         } catch (IOException e) {
             e.printStackTrace();
@@ -109,8 +97,8 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
 
             List<Element> channelChildren = channel.getChildren("item");
 
-            //for (int i = 0; i < channelChildren.size(); i++) {
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < channelChildren.size(); i++) {
+            //for (int i = 0; i < 3; i++) {
                 Element channelChild = channelChildren.get(i);
                 Element titleElement = channelChild.getChild("title");
                 Element description = channelChild.getChild("description");
@@ -138,11 +126,6 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
         return dvds;
     }
 
-    @Override
-    protected void onPreExecute() {
-        //this.dialog.setMessage("Please wait");
-        //this.dialog.show();
-    }
 
     protected void onPostExecute(List<Dvd> dvds) {
         if (MainActivity.mDialog.isShowing()) {
@@ -157,15 +140,9 @@ public class Netflix extends AsyncTask<String, Object, List<Dvd>> {
 
             MainActivity.mDvdList = dvds;
 
-            //Log.i(TAG, "dvds size: " + dvds.size());
 
-            Log.i(TAG, "mGridView adapter: " + MainActivity.mGridView.getAdapter());
 
             if (MainActivity.mGetNetflix) {
-                // I think I have to call this here because the MainActivity.mDvdList isn't populated
-                // until the AsyncTask is done and the adapter won't fire getView() until there is items
-                // in the List.
-                //
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.mContext);
                 String libraryUrl = prefs.getString("libraryUrl", "");
 

@@ -4,15 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
 
 
 public class LibrariesActivity extends Activity {
@@ -22,7 +19,6 @@ public class LibrariesActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_libraries);
 
-        //Intent intent = getIntent();
         int position = getIntent().getIntExtra("position", 0);
 
         final Dvd dvd = MainActivity.mDvdList.get(position);
@@ -35,12 +31,9 @@ public class LibrariesActivity extends Activity {
         libraryDvdTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                // Flash a transparency over the View.
                 AlphaAnimation alpha = new AlphaAnimation(0.5F, 0.5F);
-                alpha.setDuration(500); // Make animation instant
-                //alpha.setStartOffset(300);
-                //alpha.setFillAfter(true); // Tell it to persist after the animation ends
-                // And then on your layout
+                alpha.setDuration(500);
                 libraryDvdTitle.startAnimation(alpha);
 
                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -51,8 +44,6 @@ public class LibrariesActivity extends Activity {
 
         for (Library library : dvd.getLibaries()) {
             TableRow row = new TableRow(this);
-            //TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
-            //row.setLayoutParams(lp);
             row.setPadding(4, 4, 4, 4);
 
             TextView name = new TextView(this);
