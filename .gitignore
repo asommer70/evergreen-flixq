@@ -1,1 +1,6 @@
-_site
+*.swp
+*.swo
+.DS_Store
+.sass-cache/*
+.sass-cache
+_site/*

@@ -3,18 +3,75 @@ layout: default
 ---
 
 <div class="home">
+    <div class="parallax">
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <img src="img/stack_logo.svg" alt="" height="" border="0" width="75" />
+      <br/>
+      <h1>Evergreen FlixQ</h1>
+      <h3>Find DVDs In Your Queue At The Library</h3>
+    </div>
 
-  <h1>Posts</h1>
+  <div class="wrapper">
 
-  <ul class="posts">
-    {% for post in site.posts %}
-      <li>
-        <span class="post-date">{{ post.date | date: "%b %-d, %Y" }}</span>
-        <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-      </li>
-    {% endfor %}
-  </ul>
+    <div class="bennies">
+      <div class="benny"> 
+        <div class="icon">
+          <img src="../img/dvd.svg" />
+        </div>
+        Find out if your local library is carrying a copy of each DVD in your Netflix DVD Queue.
+      </div>
 
-  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
+      <br/>
+      <div class="benny"> 
+        <div class="icon">
+          <img src="../img/hold.svg" />
+        </div>
+        If a DVD is at your library quickly bring up the page and place it <strong>"On Hold"</strong>.
+      </div>
 
+      <br/>
+      <div class="benny"> 
+        <div class="icon">
+          <img src="../img/evergreen_tree.svg" />
+        </div>
+        Works with the Open Source <a target="_blank"  href="http://evergreen-ils.org">Evergreen ILS</a> system.
+      </div>
+    </div>
+
+    <div class="action-image">
+      <img src="../img/smaller_with_flixq.png" alt="" height="" width="400" />
+    </div>
+
+  </div>
+
+  <br/><br/>
+
+  <div class="wrap-wide">
+    <div class="right-stick">
+      <div class="right-content">
+        <img src="../img/movies.jpg" class="action-image" height="" width="200" />
+        <p>
+        Evergreen FlixQ is an <a href="http://opensource.org/" target="_blank">Open Source</a> project hosted on Github. 
+        </p>
+
+        <a target="_blank" class="button" href="https://github.com/asommer70/evergreen-flixq"><img src="../img/github.svg" class="action-icon"/></a>
+
+        <br class="spacer"/>
+        <br class="spacer"/>
+
+        <a target="_blank" class="button" href="#"><img src="../img/google_play.svg" class="action-icon"/></a>
+
+        <br class="spacer"/>
+        <br class="spacer"/>
+
+        <a target="_blank" class="button" href="https://twitter.com/asommer"><img src="../img/twitter.svg" class="action-icon"/></a>
+      </div>
+    </div>
+  </div>
 </div>

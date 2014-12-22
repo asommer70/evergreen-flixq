@@ -1,0 +1,234 @@
+@import "bourbon/bourbon";
+@import "neat/neat";
+//@import "base/base";
+@import "transformer.scss";
+
+@mixin vertical-align {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+$mobile: new-breakpoint(max-width 500px 4);
+
+$black: #393441;
+$red: #E44431;
+$green: #3C9872;
+$blue: #21354D;
+$light_gray: #D1D1D1;
+$dark_gray: #807e74;
+$gray: #ADACA7;
+$orange: #DB914C;
+$red_orange: #C75A38;
+$white: #EDE5DD;
+
+html, body {
+  background-color: $light_gray;
+  color: $black;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+
+  a, a:focus, a:visited {
+    color: $orange;
+    text-decoration: none;
+
+    &:hover {
+      color: darken($orange, 20);
+      text-decoration: underline;
+    }
+  }
+
+}
+
+
+.nexus5 {
+  height: 500px !important;
+ // @include translate(-50, -10);
+  @include rotate(20);
+  //width: auto !important;
+}
+
+.parallax {
+  //@include background(radial-gradient($blue_grad, $dark_blue_grad 69%), url('../images/audience_chairs2.jpg'), no-repeat fixed);
+  background: url('../img/fancy_library_red.png') no-repeat fixed;
+  background-position: center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  min-height: 500px;
+
+  h1, h3 {
+    text-align: center;
+    color: white;
+    padding: 10px;
+    text-shadow: $black 1px 2px;
+  }
+
+  img {
+    margin: 0 auto;
+    display: block;
+  }
+}
+
+.wrapper {
+  margin: 0 auto;
+  padding: 40px 0px;
+  max-width: 1000px;
+  @include outer-container;
+
+  @include media($mobile) {
+    margin-bottom: 100px;
+  }
+}
+
+.bennies, .action-image {
+  @include span-columns(6);
+
+  @include media($mobile) {
+    @include span-columns(3);
+  }
+}
+
+.action-image {
+  //padding-left: 20px;
+
+  img {
+    float: right;
+    border: 5px solid $white;
+    @include media($mobile) {
+      float: none;
+      width: 300px;
+      height: auto;
+      margin-top: 20px;
+    }
+  }
+}
+
+.benny {
+  //float: left;
+  padding-top: 0;
+  padding: 10px 10px;
+  margin-top: 20px;
+  font-size: 22px;
+
+  .icon {
+    background: $white no-repeat fixed;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    text-align: center;
+    margin: 0 auto;
+    display: inline-block;
+    margin-right: 10px;
+  
+    img {
+      @include vertical-align;
+      width: 40px;
+      height: 40px;
+      margin: 0;
+    }
+  }
+}
+
+.wrap-wide {
+  background: $red_orange;
+  //padding: 10em 0px;
+  height: 500px;
+  padding: 60px 0px;
+
+  @include media($mobile) {
+    margin-top: 160px;
+    height: 0px;
+  }
+}
+
+.right-stick {
+  background: $white;
+  max-width: 900px;
+  float: right;
+  padding-right: 20em;
+  padding-left: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  @include vertical-align;
+  font-size: 18px;
+
+  .right-content {
+    width: 600px;
+    @include media($mobile) {
+      width: 100%;
+    }
+  }
+
+  .action-image {
+    border: 5px solid $light_gray;
+    float: left;
+    margin-right: 20px;
+
+    @include media($mobile) {
+      float: none;
+      display: block;
+      margin-bottom: 20px;
+    }
+  }
+
+  .action-icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .button { 
+    background: $blue;
+    padding: 10px;
+    border-radius: 5px;
+    display: inline-block;
+
+    &:hover {
+      background: lighten($blue, 20);
+    }
+  }
+
+  @include media($mobile) {
+    margin-top: 20px;
+    padding-bottom: 40px;
+    padding-right: 20px;
+    float: none;
+  }
+}
+
+.site-footer { 
+  background: $dark_gray;
+  padding-top: 40px;
+  padding-bottom: 80px;
+  color: $white;
+
+  .wrap {
+    max-width: 1000px;
+    margin: 0 auto;
+
+    img {
+      float: left;
+      padding-right: 20px;
+    }
+
+    @include media($mobile) {
+      padding-left: 20px;
+      padding-top: 20px;
+    }
+  }
+
+  @include media($mobile) {
+    margin-top: 180px;
+    padding-top: 80px;
+  }
+}
+
+.spacer {
+  @include media($mobile) {
+    display: none;
+  }
+}
