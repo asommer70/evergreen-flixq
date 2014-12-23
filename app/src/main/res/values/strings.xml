@@ -34,8 +34,8 @@
     we are looking for. Go to the address bar of the browser and <b>copy</b> the entire URL.\n\nFinally, open
     Evergreen FlixQ back up and <b>paste</b> the URL into the Netflix RSS URL text box.\n\n</string>
 
-    <string name="evergreen_url"><font size="18"><b>Netflix URL</b></font>\n\nTo find the URL for your local library,
-    or statewide library, open a web browser and go to your libraries website. There is usually a link for the
+    <string name="evergreen_url"><font size="18"><b>Evergreen URL</b></font>\n\nTo find the URL for your local,
+    or statewide, library open a web browser and go to your libraries website. There is usually a link for the
     "Search Catalog", "Library Catalog", or wherever you can search for things.\n\n<b>Note:</b> your library has to
     use the Evergreen ILS system for this app to work.\n\nOnce you have found the link to your library\'s Evergreen
     <b>copy</b> the base part of the URL. See the example highlighted below:\n\n</string>
