@@ -21,6 +21,10 @@
   right: 25%;
   background-color: rgba(20, 20, 20, 0.5); }
 
+* {
+  margin: 0;
+  padding: 0; }
+
 html, body {
   background-color: #D1D1D1;
   color: #393441;
@@ -201,5 +205,30 @@ html, body {
 @media screen and (max-width: 500px) {
   .spacer {
     display: none; } }
+
+.nav {
+  background: #21354D;
+  text-align: center;
+  font-size: 22px;
+  padding: 20px 0px; }
+  .nav a {
+    padding: 20px; }
+
+.wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  font-size: 18px; }
+  .wrapper p {
+    margin: 20px;
+    line-height: 22px; }
+  .wrapper table {
+    background: #EDE5DD;
+    padding: 20px; }
+    .wrapper table th {
+      padding-bottom: 10px; }
+    .wrapper table td {
+      padding: 10px; }
+    .wrapper table tr:nth-child(even) {
+      background: #dbccbc; }
 
 /*# sourceMappingURL=main.css.map */

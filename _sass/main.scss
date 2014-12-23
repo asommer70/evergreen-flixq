@@ -24,6 +24,11 @@ $orange: #DB914C;
 $red_orange: #C75A38;
 $white: #EDE5DD;
 
+* {
+  margin: 0;
+  padding: 0;
+}
+
 html, body {
   background-color: $light_gray;
   color: $black;
@@ -230,5 +235,43 @@ html, body {
 .spacer {
   @include media($mobile) {
     display: none;
+  }
+}
+
+.nav {
+  background: $blue;
+  text-align: center;
+  font-size: 22px;
+  padding: 20px 0px;
+
+  a {
+    padding: 20px;
+  }
+}
+
+.wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+  font-size: 18px;
+
+  p {
+    margin: 20px;
+    line-height: 22px;
+  }
+  table {
+    background: $white;
+    padding: 20px;
+
+    th {
+      padding-bottom: 10px;
+    }
+
+    td {
+      padding: 10px;
+    }
+
+    tr:nth-child(even) {
+      background: darken($white, 10);
+    }
   }
 }
