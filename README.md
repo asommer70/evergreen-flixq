@@ -7,6 +7,8 @@ Lookup DVDs in your [Netflix DVD Queue](http://dvd.netflix.com/Queue?lnkctr=mhbq
 
 Configure the DVD Queue RSS feed and the URL for your local library catalog and the lookup will commence.
 
+Get the app on [Google Play](https://play.google.com/store/apps/details?id=com.thehoick.evergreenflixq)
+
 
 # Configuration
 
