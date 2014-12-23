@@ -7,6 +7,8 @@ permalink: /help/
 
 ## Netflix URL
 
+<iframe width="560" height="315" src="//www.youtube.com/embed/9X2OcVf1HN0" frameborder="0" allowfullscreen></iframe>
+
 To find the RSS feed URL for your Netflix DVD Queue open your browser and go to [netflix.com](http://netflix.com). If you are on a phone you 
 may see the mobile version of the website, but we want the full version.  Scroll down to the bottom and click the <strong>"View Full Site"</strong> 
 link pictured below:
