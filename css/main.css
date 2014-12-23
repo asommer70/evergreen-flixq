@@ -231,4 +231,21 @@ html, body {
     .wrapper table tr:nth-child(even) {
       background: #dbccbc; }
 
+.posts li {
+  margin-left: 60px;
+  padding-top: 40px; }
+
+.post {
+  max-width: 1000px;
+  margin: 0 auto;
+  font-size: 18px;
+  line-height: 22px; }
+  .post p {
+    margin-top: 20px;
+    margin-bottom: 20px; }
+  .post .post-header {
+    margin-top: 40px; }
+  .post article {
+    padding: 40px; }
+
 /*# sourceMappingURL=main.css.map */
